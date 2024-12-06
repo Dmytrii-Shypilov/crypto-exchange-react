@@ -58,9 +58,14 @@
   &:hover {
     background-color: var( --back-col-dark-accent);
     cursor: pointer;
+    th {
+      border-color:  var(--back-col-dark-accent);
+    }
   }
+
   th:not(:first-of-type) {
     color: var(--text-col-light);
+
   }
 }
 

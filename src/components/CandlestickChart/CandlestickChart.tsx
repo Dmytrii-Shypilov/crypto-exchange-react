@@ -1,7 +1,5 @@
-
-import s from './candlestick.module.scss'
-import React, { useEffect, useRef} from "react";
-
+import s from "./candlestick.module.scss";
+import React, { useEffect, useRef } from "react";
 
 type ChartProps = {
   token: string;
@@ -43,9 +41,8 @@ const TradingViewWidget: React.FC<ChartProps> = ({ token }) => {
   }, [token]);
 
   return (
-  <div className={s.container}>
-          <div
-        suppressHydrationWarning={true}
+    <div className={s.container}>
+      <div
         className="tradingview-widget-container"
         ref={containerRef}
         style={{ height: "100%", width: "100%" }}
@@ -55,9 +52,7 @@ const TradingViewWidget: React.FC<ChartProps> = ({ token }) => {
           style={{ height: "100%", width: "100%" }}
         ></div>
       </div>
-  </div>
-
-   
+    </div>
   );
 };
 

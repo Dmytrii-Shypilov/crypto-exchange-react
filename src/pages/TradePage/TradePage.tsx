@@ -1,8 +1,7 @@
 import s from "./trade-page.module.scss";
 
-// import { useState } from "react";
+import { useState } from "react";
 
-// import Container from "@/components/Container/Container";
 import TradePageHead from "../../components/TradePageHead/TradePageHead";
 import TradingViewWidget from "../../components/CandlestickChart/CandlestickChart";
 import OrderBook from "../../components/OrderBook/OrderBook";
@@ -13,6 +12,9 @@ import CoinsPairs from "../../components/CoinsPairs/CoinsPairs";
 import { useParams } from "react-router-dom";
 
 const TradePage: React.FC = () => {
+
+  const [choosePrice, setChoosenPrice] = useState('')
+
   const { tradedPair } = useParams();
   const pair = tradedPair ?? "BTC-USDT";
 
@@ -21,10 +23,10 @@ const TradePage: React.FC = () => {
       <section className={s.section}>
         <TradePageHead pair={pair} />
         <div className={s.trio_wrapper}>
-          <OrderBook pair={pair} />
+          <OrderBook pair={pair} setChoosenPrice={setChoosenPrice}/>
           <div className={s.chart_form_wrapper}>
             <TradingViewWidget token={pair} />
-            <OrderForm pair={pair} />
+            <OrderForm pair={pair} choosenPrice={choosePrice}/>
           </div>
           <CoinsPairs />
         </div>

@@ -2,14 +2,16 @@
 
 import s from "./order-book.module.scss";
 
+import { Dispatch, SetStateAction } from "react";
 import { priceData } from "../../service/dummy-data";
 import { Icons } from "../SVGIcons/icons";
 
 type OrderBookProps = {
   pair: string;
+  setChoosenPrice: Dispatch<SetStateAction<string>>
 };
 
-const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
+const OrderBook: React.FC<OrderBookProps> = ({ pair, setChoosenPrice }) => {
   const [base, quote] = pair.split("-");
 
   // const getTradedSum = (position: 'bids' | 'asks') => {
@@ -35,7 +37,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
         <table className={s.table}>
           <thead className={s.head}>
             <tr>
-              <th className={s.cell}>Price{` (${quote})`}</th>
+              <th className={s.cell} >Price{` (${quote})`}</th>
               <th className={s.cell}>Amount{` (${base})`}</th>
               <th className={s.cell}>Total{` (${base})`}</th>
             </tr>
@@ -44,7 +46,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
             {priceData["asks"].map((data, idx) => {
               return (
                 <tr key={idx} className={s.ask_order}>
-                  <th className={s.cell}>{data[0]}</th>
+                  <th className={s.cell} onClick={()=>setChoosenPrice(data[0])}>{data[0]}</th>
                   <th className={s.cell}>{data[1]}</th>
                   <th className={s.cell}>
                     {Number(data[0]) * Number(data[1])}
@@ -70,7 +72,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair }) => {
             {priceData["bids"].map((data, idx) => {
               return (
                 <tr key={idx} className={s.bid_order}>
-                  <th className={s.cell}>{data[0]}</th>
+                  <th className={s.cell} onClick={()=>setChoosenPrice(data[0])}>{data[0]}</th>
                   <th className={s.cell}>{data[1]}</th>
                   <th className={s.cell}>
                     {Number(data[0]) * Number(data[1])}

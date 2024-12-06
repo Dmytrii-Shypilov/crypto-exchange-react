@@ -3,7 +3,7 @@
 import s from "./form.module.scss";
 import InputsSet from "./InputsSet/InputsSet";
 import FormTabs from "./FormTabs/FormTabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Transaction, FormDataType } from "../../constants";
 
 const InitState = {
@@ -23,16 +23,37 @@ const InitState = {
   },
 };
 
-const OrderForm: React.FC<{ pair: string }> = ({ pair }) => {
+const OrderForm: React.FC<{ pair: string; choosenPrice: string }> = ({
+  pair,
+  choosenPrice,
+}) => {
   const [form, setForm] = useState<Form>(Form.Limit);
   const [formData, setFormData] = useState<FormDataType>(InitState);
   const [base, quote] = pair.split("-");
 
+  useEffect(() => {
+    setFormData((prevState) => {
+      return {
+        buy: {
+          ...prevState.buy,
+          price: choosenPrice,
+          limit: choosenPrice,
+          stop: choosenPrice,
+        },
+        sell: {
+          ...prevState.sell,
+          price: choosenPrice,
+          limit: choosenPrice,
+          stop: choosenPrice,
+        },
+      };
+    });
+  }, [choosenPrice]);
 
   const onTabChange = (tabName: Form) => {
-    setFormData(InitState)
-    setForm(tabName)
-  }
+    setFormData(InitState);
+    setForm(tabName);
+  };
 
   const onFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, name, value } = e.target;
@@ -40,8 +61,8 @@ const OrderForm: React.FC<{ pair: string }> = ({ pair }) => {
     setFormData((prevState) => ({
       ...prevState,
       [id]: {
-        ...prevState[id as keyof FormDataType], 
-        [name]: value, 
+        ...prevState[id as keyof FormDataType],
+        [name]: value,
       },
     }));
   };
