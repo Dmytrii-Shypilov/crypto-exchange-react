@@ -1,0 +1,75 @@
+.book {
+  width: calc(25% - 10px);
+  background-color: var(--back-col-widget);
+  border-radius: var(--border-rad-widget);
+}
+
+.tables {
+  display: flex ;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.name {
+  display: block;
+  padding: 10px;
+  color: var(--text-col-light);
+  font-size: 16px;
+  border-bottom: 1px solid var(--border-col-gray);
+}
+
+.table {
+  width: 100%;
+}
+
+.head {
+  color: var(--text-col-gray);
+  height: 25px;
+}
+
+.list_item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cell {
+  width: calc((100% / 3));
+  text-align: left;
+  font-size: 12px;
+  font-weight: 400;
+  &:not(:first-of-type) {
+    text-align: right;
+  }
+}
+
+.price_display {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.price {
+  font-size: 17px;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.row {
+  &:hover {
+    background-color: var( --back-col-dark-accent);
+    cursor: pointer;
+  }
+  th:not(:first-of-type) {
+    color: var(--text-col-light);
+  }
+}
+
+.ask_order {
+  @extend .row;
+  color: var(--green);
+}
+
+.bid_order {
+  @extend .row;
+  color: var(--red);
+}

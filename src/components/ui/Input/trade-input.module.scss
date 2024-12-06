@@ -1,0 +1,66 @@
+.input {
+  position: relative;
+  display: flex;
+  height: 40px;
+  width: 100%;
+}
+
+.input_field {
+  border: 1px solid var(--border-col-gray);
+  width: 100%;
+  height: 40px;
+  border-radius: var(--border-rad-widget);
+  background-color: transparent;
+  text-align: right;
+  padding-left: 7px;
+  color: var(--text-col-light);
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.type {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-col-gray);
+}
+
+.curr_ind {
+  position: absolute;
+  right: 27px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--text-col-light);
+}
+
+.side_btn_panel {
+  position: absolute;
+  right: 0;
+  height: 40px;
+}
+
+.side_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+  width: 20px;
+  border-left: 1px solid var(--border-col-gray);
+  fill: var(--border-col-gray);
+  cursor: pointer;
+  &:last-of-type {
+    border-top: 1px solid var(--border-col-gray);
+  }
+  &:hover {
+    fill: var(--text-col-light);
+  }
+}

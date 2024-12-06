@@ -1,0 +1,85 @@
+.pairsBlock {
+  height: 420px;
+  width: calc(25% - 10px);
+
+  background-color: var(--back-col-widget);
+  border-radius: var(--border-rad-widget);
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--border-col-gray);
+}
+
+.curr_list {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  height: 20px;
+  width: auto;
+  margin-right: 5px;
+  cursor: pointer;
+  fill: var(--text-col-gray);
+}
+
+.fav_icon {
+  @extend .icon;
+  padding: 2px;
+  border: 1px solid var(--border-col-gray);
+  border-radius: 4px;
+
+  &_active {
+    @extend .fav_icon;
+    fill: var(--golden);
+    border-color: var(--golden);
+  }
+}
+
+.star_pair {
+  display: flex;
+  align-items: center;
+}
+
+.currency {
+  font-size: 15px;
+  color: var(--text-col-gray);
+  cursor: pointer;
+  fill: var(--text-col-gray);
+  &:not(:last-of-type) {
+    margin-right: 18px;
+  }
+
+  &:hover {
+    color: var(--text-col-light);
+  }
+}
+
+.currency_active {
+  @extend .currency;
+  color: var(--text-col-light);
+  fill: var(--golden);
+}
+
+.pairs_list {
+  padding: 10px 0px;
+}
+
+.pair {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  height: 25px;
+  padding: 0 15px;
+  font-size: 13px;
+  color: var(--text-col-light);
+}

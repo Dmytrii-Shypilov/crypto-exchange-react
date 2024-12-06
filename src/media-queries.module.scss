@@ -1,0 +1,26 @@
+// MEDIA QUERIES MIXINS
+
+@mixin screen-size($breakpoint) {
+    @if $breakpoint == mobile {
+        @media (max-width: 576px)  {
+          @content;
+        }
+      }
+    @else if $breakpoint == tab {
+      @media (min-width: 577px) and (max-width: 768px) {
+        @content;
+      }
+  }
+  
+  @else if $breakpoint == desk-sm {
+    @media (min-width: 769px) and (max-width: 1280px) {
+      @content;
+    }
+  }
+  
+  @else if $breakpoint == desk-lg {
+    @media (min-width: 1281px)  {
+      @content;
+    }
+  }
+  }

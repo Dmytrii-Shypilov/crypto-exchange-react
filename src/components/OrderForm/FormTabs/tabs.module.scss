@@ -1,0 +1,49 @@
+.tabs_list {
+  display: flex;
+  width: max-content;
+  margin-bottom: 10px;
+  &_item {
+    color: var(--text-col-gray);
+    cursor: pointer;
+    margin-right: 15px;
+  }
+}
+
+.tabs_list_item_active {
+  @extend .tabs_list_item;
+  color: var(--text-col-light);
+}
+
+.dropMenu_wrapper {
+  position: relative;
+  width: 150px;
+}
+
+.dropMenu {
+  position: absolute;
+  left: -2px;
+  bottom: -75px;
+  z-index: 1;
+  display: flex;
+
+  flex-direction: column;
+  background-color: var(--back-col-widget);
+  border: 1px solid var(--border-col-gray);
+  border-radius: var(--border-rad-widget);
+  color: var(--text-col-gray);
+}
+
+.dropMenu_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 37px;
+  padding: 0px 10px;
+  cursor: pointer;
+}
+
+.dropMenu_item_active {
+  @extend .dropMenu_item;
+  color: var(--text-col-light);
+  background-color: var(--text-col-gray);
+}

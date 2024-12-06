@@ -1,0 +1,93 @@
+.orders_block {
+  width: 100%;
+  margin-top: 10px;
+  background-color: var(--back-col-widget);
+  border-radius: var(--border-rad-widget);
+}
+
+.tab_list {
+  display: flex;
+  height: 38px;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 0.5px solid var(--border-col-gray);
+}
+
+.tab {
+  font-size: 15px;
+  color: var(--text-col-gray);
+  cursor: pointer;
+  &:not(:last-of-type) {
+    margin-right: 18px;
+  }
+
+  &:hover {
+    color: var(--text-col-light);
+  }
+}
+
+.tab_open {
+  @extend .tab;
+  color: var(--text-col-light);
+}
+
+.name_list {
+  display: flex;
+  height: 38px;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.name {
+  color: var(--text-col-gray);
+  font-size: 13px;
+
+  width: calc(100% / 9);
+}
+
+.order_list {
+  width: 100%;
+}
+
+.order {
+  display: flex;
+  align-items: center;
+  height: 35px;
+  padding: 0 15px;
+  font-size: 13px;
+  color: var(--text-col-light);
+  &:hover {
+    background-color: var(--back-col-dark-accent);
+  }
+
+
+}
+
+.order_item {
+    width: calc(100% / 9);
+}
+
+.order_buy {
+    @extend .order_item;
+    color: var(--green);
+}
+.order_sell {
+    @extend .order_item;
+    color: var(--red);
+}
+
+.btn {
+    display: flex;
+   height: 22px;
+   padding: 0 7px;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    border-radius: var(--border-rad-widget);
+    background-color: var(--text-col-gray);
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}

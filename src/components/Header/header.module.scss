@@ -1,0 +1,96 @@
+@use "../../media-queries.module.scss" as mq;
+
+.header {
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  border-bottom: 1px solid var(--neutral-lg);
+}
+
+.header_dark {
+  @extend .header;
+  background-color: var(--back-col-widget);
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  
+  @include mq.screen-size(mobile) {
+    justify-content: space-between;
+  }
+}
+
+.nav {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-left: 280px;
+
+  @include mq.screen-size(mobile) {
+    display: none;
+    margin-left: 0;
+  }
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.list_item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  &:not(:last-of-type) {
+    margin-right: 20px;
+  }
+
+}
+
+.logo {
+  fill: var(--text-col-main);
+}
+
+.logo_dark {
+  fill: var(--green)
+}
+
+.link {
+  color: var(--text-col-main);
+  font-weight: 700;
+  transition: color 200ms;
+
+  &:hover {
+    color: var(--green);
+  }
+}
+
+.link_dark {
+  @extend .link;
+  color: var(--text-col-light);
+}
+
+.link_active {
+  @extend .link;
+  color: var(--green);
+}
+
+.icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+ 
+  transition: all 250ms;
+  &:hover {
+    fill: var(--accent-mb);
+  }
+
+  @include mq.screen-size(mobile) {
+    display: flex;
+  }
+}

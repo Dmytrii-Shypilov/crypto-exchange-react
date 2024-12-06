@@ -1,0 +1,13 @@
+@use '../../media-queries.module.scss' as mq;
+
+.container {
+    max-width: 1120px;
+    height: 100%;
+    padding: 0 20px;
+    // padding: 0 85px;
+    margin: 0 auto;
+
+    // @include screen-size(mobile) {
+    //     max-width: 576px;
+    // }
+}
