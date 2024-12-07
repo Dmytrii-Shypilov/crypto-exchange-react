@@ -19,18 +19,12 @@ export const enum InputType {
 }
 
 export type FormDataType = {
-  buy: {
-    price: string;
-    amount: string;
-    stop: string;
-    limit: string;
-    total: string;
-  };
-  sell: {
-    price: string;
-    amount: string;
-    stop: string;
-    limit: string;
-    total: string;
-  };
+  buy:FormDataTypeObj
+  sell: FormDataTypeObj
 };
+
+export type FormDataTypeObj = 
+  | { price: string; amount: string } 
+  | { total: string }              
+  | { amount: string; stop: string; limit: string } 
+  | { amount: string; stop: string }; 

@@ -1,18 +1,16 @@
 "use client";
 
 import s from "./set.module.scss";
-import { Form, InputType, Transaction } from "../../../constants";
+import { Form, InputType, Transaction, FormDataTypeObj } from "../../../constants";
 import TradeFormInput from "../../ui/Input/TradeFormInput";
-
 
 type InputsSetProps = {
   set: Form;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   pair: string;
   transaction: Transaction;
-  formData: {limit: string, amount: string, price: string, stop: string, total: string, };
-  };
-
+  formData: FormDataTypeObj
+};
 
 const InputsSet: React.FC<InputsSetProps> = ({
   set,
@@ -23,53 +21,46 @@ const InputsSet: React.FC<InputsSetProps> = ({
 }) => {
   const [base, quote] = pair.split("-");
 
-  const renderTradeFormInput = (
-    type: InputType,
-    currency: string,
-    value: string
-  ) => (
-    <TradeFormInput
-      value={value}
-      transaction={transaction}
-      currency={currency}
-      type={type}
-      onChange={onChange}
-    />
-  );
+  const formConfig = {
+    [Form.Limit]: [
+      { type: InputType.Price, currency: quote },
+      { type: InputType.Amount, currency: base },
+    ],
+    [Form.Market]: [
+      {
+        type:
+          transaction === Transaction.Buy ? InputType.Total : InputType.Amount,
+        currency: transaction === Transaction.Buy ? quote : base,
+      },
+    ],
+    [Form.StopLimit]: [
+      { type: InputType.Stop, currency: quote },
+      { type: InputType.Limit, currency: quote },
+      { type: InputType.Amount, currency: base },
+    ],
+    [Form.StopMarket]: [
+      { type: InputType.Stop, currency: quote },
+      { type: InputType.Amount, currency: base },
+    ],
+  };
+  const getFormFieldValue = (type: InputType) => {
+    return formData[type as keyof FormDataTypeObj] || "";
+  };
+  
 
   return (
     <div className={s.inputs}>
-      {set === Form.Limit && (
-        <>
-          {renderTradeFormInput(InputType.Price, quote, formData.price)}
-          {renderTradeFormInput(InputType.Amount, base, formData.amount)}
-        </>
-      )}
+      {formConfig[set]?.map(({ type, currency }) => (
 
-      {set === Form.Market && (
-        <>
-          {renderTradeFormInput(
-            transaction === Transaction.Buy
-              ? InputType.Total
-              : InputType.Amount,
-            transaction === Transaction.Buy ? quote : base,
-            transaction === Transaction.Buy ? formData.total : formData.amount
-          )}
-        </>
-      )}
-      {set === Form.StopLimit && (
-        <>
-          {renderTradeFormInput(InputType.Stop, quote, formData.stop)}
-          {renderTradeFormInput(InputType.Limit, quote, formData.limit)}
-          {renderTradeFormInput(InputType.Amount, base, formData.amount)}
-        </>
-      )}
-      {set === Form.StopMarket && (
-        <>
-          {renderTradeFormInput(InputType.Stop, quote, formData.stop)}
-          {renderTradeFormInput(InputType.Amount, base, formData.amount)}
-        </>
-      )}
+      <TradeFormInput
+        key={type}
+        value={getFormFieldValue(type)}
+        transaction={transaction}
+        currency={currency}
+        type={type}
+        onChange={onChange}
+      />
+    ))}
     </div>
   );
 };
