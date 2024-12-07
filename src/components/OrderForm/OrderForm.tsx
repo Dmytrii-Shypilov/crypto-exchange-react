@@ -24,7 +24,7 @@ const forms = {
 };
 
 
-const OrderForm: React.FC<{ pair: string; choosenPrice: string }> = ({
+const OrderForm: React.FC<{ pair: string; choosenPrice: string}> = ({
   pair,
   choosenPrice,
 }) => {
@@ -35,34 +35,38 @@ const OrderForm: React.FC<{ pair: string; choosenPrice: string }> = ({
   });
 
   const [base, quote] = pair.split("-");
-
   useEffect(() => {
+   
     setFormData({ buy: { ...forms[form] }, sell: { ...forms[form] }});
-  }, [form]);
+    if (choosenPrice) {
+      setFormData((prevState) => {
+        const updatedFields = ["price", "limit", "stop"].reduce(
+          (state, field) => {
+            if (field in prevState.buy) {
+              state[field] = choosenPrice;
+            }
+            return state;
+          },
+          {} as Record<string, string>
+        );
+        return {
+          buy: {
+            ...prevState.buy,
+            ...updatedFields,
+          },
+          sell: {
+            ...prevState.sell,
+            ...updatedFields,
+          },
+        };
+      });
+    
+    }
+    
+    
+  }, [form, choosenPrice]);
 
-  useEffect(() => {
-    setFormData((prevState) => {
-      const updatedFields = ["price", "limit", "stop"].reduce(
-        (state, field) => {
-          if (field in prevState.buy) {
-            state[field] = choosenPrice;
-          }
-          return state;
-        },
-        {} as Record<string, string>
-      );
-      return {
-        buy: {
-          ...prevState.buy,
-          ...updatedFields,
-        },
-        sell: {
-          ...prevState.sell,
-          ...updatedFields,
-        },
-      };
-    });
-  }, [choosenPrice]);
+
 
   const onTabChange = (tabName: Form) => {
     setForm(tabName);

@@ -12,21 +12,24 @@ import CoinsPairs from "../../components/CoinsPairs/CoinsPairs";
 import { useParams } from "react-router-dom";
 
 const TradePage: React.FC = () => {
-
-  const [choosePrice, setChoosenPrice] = useState('')
-
+  const [choosenPrice, setChoosenPrice] = useState( "");
+console.log(choosenPrice)
   const { tradedPair } = useParams();
   const pair = tradedPair ?? "BTC-USDT";
+
+  const changeChoosenPrice = (price: string) => {
+    setChoosenPrice(price);
+  };
 
   return (
     <main>
       <section className={s.section}>
         <TradePageHead pair={pair} />
         <div className={s.trio_wrapper}>
-          <OrderBook pair={pair} setChoosenPrice={setChoosenPrice}/>
+          <OrderBook pair={pair} changeChoosenPrice={changeChoosenPrice} />
           <div className={s.chart_form_wrapper}>
             <TradingViewWidget token={pair} />
-            <OrderForm pair={pair} choosenPrice={choosePrice}/>
+            <OrderForm pair={pair} choosenPrice={choosenPrice} />
           </div>
           <CoinsPairs />
         </div>

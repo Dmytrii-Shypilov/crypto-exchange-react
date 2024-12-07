@@ -2,16 +2,16 @@
 
 import s from "./order-book.module.scss";
 
-import { Dispatch, SetStateAction } from "react";
+
 import { priceData } from "../../service/dummy-data";
 import { Icons } from "../SVGIcons/icons";
 
 type OrderBookProps = {
   pair: string;
-  setChoosenPrice: Dispatch<SetStateAction<string>>
+  changeChoosenPrice: (price: string)=> void
 };
 
-const OrderBook: React.FC<OrderBookProps> = ({ pair, setChoosenPrice }) => {
+const OrderBook: React.FC<OrderBookProps> = ({ pair, changeChoosenPrice }) => {
   const [base, quote] = pair.split("-");
 
   // const getTradedSum = (position: 'bids' | 'asks') => {
@@ -27,6 +27,8 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair, setChoosenPrice }) => {
   //     return acc + value;
   //   }, 0);
   // };
+
+
   
 
   return (
@@ -46,7 +48,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair, setChoosenPrice }) => {
             {priceData["asks"].map((data, idx) => {
               return (
                 <tr key={idx} className={s.ask_order}>
-                  <th className={s.cell} onClick={()=>setChoosenPrice(data[0])}>{data[0]}</th>
+                  <th className={s.cell} onClick={()=>changeChoosenPrice(data[0])}>{data[0]}</th>
                   <th className={s.cell}>{data[1]}</th>
                   <th className={s.cell}>
                     {Number(data[0]) * Number(data[1])}
@@ -72,7 +74,7 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair, setChoosenPrice }) => {
             {priceData["bids"].map((data, idx) => {
               return (
                 <tr key={idx} className={s.bid_order}>
-                  <th className={s.cell} onClick={()=>setChoosenPrice(data[0])}>{data[0]}</th>
+                  <th className={s.cell} onClick={()=>changeChoosenPrice(data[0])}>{data[0]}</th>
                   <th className={s.cell}>{data[1]}</th>
                   <th className={s.cell}>
                     {Number(data[0]) * Number(data[1])}
