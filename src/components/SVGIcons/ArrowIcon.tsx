@@ -1,12 +1,19 @@
 
-function ArrowIcon(props: React.SVGProps<SVGSVGElement>) {
+type ArrowProps =  {
+  type: 'up' | 'down',
+  fill: string
+}
+
+const ArrowIcon: React.FC<ArrowProps> = ({fill, type}) =>   {
+ const transform = type === 'down' ?"rotate(180, 0, 0)" : 'none'
+
   return (
     <svg
-      fill="currentColor"
-      viewBox="0 0 16 16"
-      height="1em"
-      width="1em"
-      {...props}
+      fill={fill}
+      viewBox="0 0 15 15"
+      height="15px"
+      width="auto"
+      transform={transform}
     >
       <path
         fillRule="evenodd"

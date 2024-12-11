@@ -38,15 +38,28 @@
 }
 
 .figure {
-    color: var(--text-col-light);
     text-align-last: left;
+    &:not(:first-of-type) {
+      color: var(--text-col-light);
+    }
+
+}
+.percents {
+  margin-left: 10px;
+  font-size: 12px;
 }
 
+.price_change {
+  color: var(--green)
+}
+
+.price_change_neg {
+  color: var(--red);
+}
+
+
 .price {
-  color: var(--text-col-light);
   margin-right: 40px;
-  font-size: 20px;
-  
 }
 
 .pair {

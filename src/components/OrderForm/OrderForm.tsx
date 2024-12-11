@@ -97,16 +97,11 @@ const OrderForm: React.FC<{ pair: string; choosenPrice: string}> = ({
             formData={formData.buy}
           />
 
-          <div>
             <div className={s.balance}>
               <span>Avbl</span>
               <span>{`-- ${quote}`}</span>
             </div>
-            <div className={s.balance}>
-              <span>MaxBuy</span>
-              <span>{`-- ${base}`}</span>
-            </div>
-          </div>
+     
           <button className={s.buy_btn}>{`Buy ${base}`}</button>
         </div>
         <div className={s.fields_block}>
@@ -123,10 +118,7 @@ const OrderForm: React.FC<{ pair: string; choosenPrice: string}> = ({
               <span>Avbl</span>
               <span>{`-- ${base}`}</span>
             </div>
-            <div className={s.balance}>
-              MaxSell<span></span>
-              <span>{`-- ${quote}`}</span>
-            </div>
+       
           </div>
           <button className={s.sell_btn}>{`Sell ${base}`}</button>
         </div>

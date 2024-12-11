@@ -1,0 +1,13 @@
+.price {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+    }
+  }

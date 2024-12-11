@@ -3,9 +3,12 @@ import s from "./pairs.module.scss";
 
 import { useState } from "react";
 import { Icons } from "../SVGIcons/icons";
+import { useNavigate } from "react-router-dom";
 
 const CoinsPairs = () => {
   const [tab, setTab] = useState<string>("BTC");
+
+  const navigate = useNavigate()
 
   const getClassName = (coin: string) => {
     return tab === coin ? s.currency_active : s.currency;
@@ -39,7 +42,7 @@ const CoinsPairs = () => {
             <span className={s.icon}>
               <Icons.StarIcon />
             </span>
-            <span>BTC/USDT</span>
+            <span onClick={()=> navigate('/trade/LUNC-USDT')}>LUNC/USDT</span>
           </div>
 
           <span>-26%</span>

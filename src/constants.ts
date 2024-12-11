@@ -28,3 +28,20 @@ export type FormDataTypeObj =
   | { total: string }              
   | { amount: string; stop: string; limit: string } 
   | { amount: string; stop: string }; 
+
+  export type StreamedTradeInfoType = {
+    coinsInfo: {
+    lastPrice: string,
+    priceChange: string,
+    priceChangePercent:string,
+    highPrice: string,
+    lowPrice: string,
+    baseVolume: string,
+    quoteVolume: string
+  },
+  orderBook: {
+    lastUpdatedId: string,
+    bids: [string[]],
+    asks: [string[]]
+  }  
+  }

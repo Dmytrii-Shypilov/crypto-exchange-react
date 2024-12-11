@@ -1,35 +1,56 @@
-"use client";
-
 import s from "./order-book.module.scss";
 
+import { StreamedTradeInfoType } from "../../constants";
+import PriceIndicator from "../PriceIndicator/PriceIndicator";
+import { formatNumber } from "../../service/helpers";
 
-import { priceData } from "../../service/dummy-data";
-import { Icons } from "../SVGIcons/icons";
+
 
 type OrderBookProps = {
   pair: string;
-  changeChoosenPrice: (price: string)=> void
+  changeChoosenPrice: (price: string) => void;
+  streamedInfo: StreamedTradeInfoType;
 };
 
-const OrderBook: React.FC<OrderBookProps> = ({ pair, changeChoosenPrice }) => {
+const OrderBook: React.FC<OrderBookProps> = ({
+  pair,
+  changeChoosenPrice,
+  streamedInfo,
+}) => {
   const [base, quote] = pair.split("-");
 
-  // const getTradedSum = (position: 'bids' | 'asks') => {
-  //   if (!priceData[position] || !Array.isArray(priceData[position])) {
-  //     throw new Error(`Invalid data for position: ${position}`);
-  //   }
-    
-  //   return priceData[position].reduce((acc, curr) => {
-  //     const value = curr[1];
-  //     if (typeof value !== 'number') {
-  //       throw new Error(`Invalid data format: expected number but got ${typeof value}`);
-  //     }
-  //     return acc + value;
-  //   }, 0);
-  // };
+  const bids =streamedInfo.orderBook["bids"].map((data, idx) => {
+    const total = formatNumber.abreviateNumber(Number(data[0]) * Number(data[1]))
+    console.log(`0:${data[0]} 1: ${data[1]} total: ${total}`)
+    return (
+      <tr key={idx} className={s.bid_order}>
+        <th
+          className={s.cell}
+          onClick={() => changeChoosenPrice(Number(data[0]).toString())}
+        >
+          {Number(data[0]).toString()}
+        </th>
+        <th className={s.cell}>{formatNumber.abreviateNumber(data[1])}</th>
+        <th className={s.cell}>{total}</th>
+      </tr>
+    );
+  })
 
-
-  
+  const asks = streamedInfo.orderBook["asks"].reverse().map((data, idx) => {
+    const total = formatNumber.abreviateNumber(Number(data[0]) * Number(data[1]))
+    return (
+      <tr key={idx} className={s.ask_order}>
+        <th
+          className={s.cell}
+          onClick={() => changeChoosenPrice(Number(data[0]).toString())}
+        >
+         {Number(data[0]).toString()}
+        </th>
+        <th className={s.cell}>{formatNumber.abreviateNumber(data[1])}</th>
+        <th className={s.cell}>{total}</th>
+      </tr>
+    );
+  })
 
   return (
     <div className={s.book}>
@@ -39,60 +60,28 @@ const OrderBook: React.FC<OrderBookProps> = ({ pair, changeChoosenPrice }) => {
         <table className={s.table}>
           <thead className={s.head}>
             <tr>
-              <th className={s.cell} >Price{` (${quote})`}</th>
+              <th className={s.cell}>Price{` (${quote})`}</th>
               <th className={s.cell}>Amount{` (${base})`}</th>
-              <th className={s.cell}>Total{` (${base})`}</th>
+              <th className={s.cell}>Total</th>
             </tr>
           </thead>
+
           <tbody>
-            {priceData["asks"].map((data, idx) => {
-              return (
-                <tr key={idx} className={s.ask_order}>
-                  <th className={s.cell} onClick={()=>changeChoosenPrice(data[0])}>{data[0]}</th>
-                  <th className={s.cell}>{data[1]}</th>
-                  <th className={s.cell}>
-                    {Number(data[0]) * Number(data[1])}
-                  </th>
-                </tr>
-              );
-            })}
+            {bids}
           </tbody>
         </table>
         <div className={s.price_display}>
-          <span
-            className={s.price}
-            style={{
-              color: priceData.changedUp ? "#31D0AA" : "rgb(246, 103, 84)",
-            }}
-          >
-            97,500
-          </span>
-          <Icons.ArrowIcon fill={"#31D0AA"} />
+          <PriceIndicator
+            price={formatNumber.convertToUs(streamedInfo.coinsInfo.lastPrice)}
+            icon={true}
+          />
         </div>
         <table className={s.table}>
           <tbody>
-            {priceData["bids"].map((data, idx) => {
-              return (
-                <tr key={idx} className={s.bid_order}>
-                  <th className={s.cell} onClick={()=>changeChoosenPrice(data[0])}>{data[0]}</th>
-                  <th className={s.cell}>{data[1]}</th>
-                  <th className={s.cell}>
-                    {Number(data[0]) * Number(data[1])}
-                  </th>
-                </tr>
-              );
-            })}
+            {asks}
           </tbody>
         </table>
       </div>
-      {/* <div className={s.status_bar}>
-        <span className={s.buy_perc}></span>
-        <div className={s.bar}>
-          <span className={s.bar_buy}></span>
-          <span className={s.bar_sell}></span>
-        </div>
-        <span className={s.sell_perc}></span>
-      </div> */}
     </div>
   );
 };
