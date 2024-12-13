@@ -1,14 +1,18 @@
-import { ReactNode } from "react"
+import s from "./button.module.scss";
 
-type ButtonProps = {
-    children: ReactNode,
-    width: string,
-    color: 'green' | 'red'
-}
 
-const Button: React.FC<ButtonProps> = ({children, width}) => {
-    
-    return <button style={{color: width}}>{children}</button>
-}
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
+  children: React.ReactNode;
+  width?: string;
 
-export default Button
+};
+
+const Button: React.FC<ButtonProps> = ({ children, width, ...props }) => {
+  return (
+    <button {...props} className={s.btn} style={{ width: width ? width : "auto" }}>
+      {children}
+    </button>
+  );
+};
+
+export default Button;

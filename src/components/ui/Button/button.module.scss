@@ -1,0 +1,12 @@
+.btn {
+    height: 35px;
+    background-color: var(--green);
+    font-size: 15px;
+    color: var(--text-col-light);
+    border: transparent;
+    border-radius: var(--border-rad-widget);
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+    }
+}

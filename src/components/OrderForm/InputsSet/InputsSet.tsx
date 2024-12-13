@@ -2,7 +2,7 @@
 
 import s from "./set.module.scss";
 import { Form, InputType, Transaction, FormDataTypeObj } from "../../../constants";
-import TradeFormInput from "../../ui/Input/TradeFormInput";
+import TradeFormInput from "../../ui/TradeFormInput/TradeFormInput";
 
 type InputsSetProps = {
   set: Form;

@@ -1,0 +1,10 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: calc(100vh - 70px);
+    background-image: url('../../assets/auth_bg.png');
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: center left;
+}

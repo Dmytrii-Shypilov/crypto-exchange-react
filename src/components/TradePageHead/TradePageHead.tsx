@@ -3,7 +3,7 @@ import s from "./head.module.scss";
 
 import { Icons } from "../SVGIcons/icons";
 import { StreamedTradeInfoType } from "../../constants";
-import { formatNumber } from "../../service/helpers";
+import { formatNumber } from "../../utils/helpers";
 import PriceIndicator from "../PriceIndicator/PriceIndicator";
 
 

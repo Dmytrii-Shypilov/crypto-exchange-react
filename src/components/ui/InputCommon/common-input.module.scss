@@ -1,0 +1,16 @@
+.input {
+    height: 35px;
+    padding: 0 10px;
+    border-radius: var(--border-rad-widget);
+    border: 1px solid var(--border-col-gray);
+}
+
+.label {
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.error {
+    font-size: 12px;
+    color: var(--red);
+}

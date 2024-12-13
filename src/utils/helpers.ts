@@ -1,4 +1,3 @@
-
 const abreviateNumber = (number: string | number) => {
   const num = Number(number);
 
@@ -12,33 +11,27 @@ const abreviateNumber = (number: string | number) => {
 };
 
 const convertToUs = (num: string) => {
-  const number =Number(num)
+  const number = Number(num);
   if (number > 1) {
     return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(number);
   } else {
-    return num
+    return num;
   }
-  
-}
-
+};
 
 const formatTradeNums = (
   targetObj: Record<string, string>,
   ignoreKey: string = ""
 ): Record<string, string> => {
-  // Create a new object to store the formatted values
   const formattedObj: Record<string, string> = {};
 
   for (const key in targetObj) {
     if (Object.prototype.hasOwnProperty.call(targetObj, key)) {
-      // If the key is not the ignoreKey, format the value
       formattedObj[key] =
-        key !== ignoreKey
-          ? convertToUs(targetObj[key])
-          : targetObj[key];
+        key !== ignoreKey ? convertToUs(targetObj[key]) : targetObj[key];
     }
   }
 
@@ -48,5 +41,5 @@ const formatTradeNums = (
 export const formatNumber = {
   convertToUs,
   abreviateNumber,
-  formatTradeNums
-}
+  formatTradeNums,
+};

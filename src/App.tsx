@@ -4,6 +4,7 @@ import s from './App.module.scss'
 
 import Header from "./components/Header/Header";
 import TradePage from "./pages/TradePage/TradePage";
+import AuthorizationPage from "./pages/AuthorizationPage/AuthorizationPage";
 
 function App() {
   return (
@@ -13,11 +14,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <main>
-                <h1>Heloo</h1>
-              </main>
-            }
+            element={<AuthorizationPage/>}
           />
           <Route path="/trade/:tradedPair" element={<TradePage />} />
         </Routes>

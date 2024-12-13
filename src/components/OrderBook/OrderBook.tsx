@@ -2,7 +2,7 @@ import s from "./order-book.module.scss";
 
 import { StreamedTradeInfoType } from "../../constants";
 import PriceIndicator from "../PriceIndicator/PriceIndicator";
-import { formatNumber } from "../../service/helpers";
+import { formatNumber } from "../../utils/helpers";
 
 
 
@@ -21,7 +21,6 @@ const OrderBook: React.FC<OrderBookProps> = ({
 
   const bids =streamedInfo.orderBook["bids"].map((data, idx) => {
     const total = formatNumber.abreviateNumber(Number(data[0]) * Number(data[1]))
-    console.log(`0:${data[0]} 1: ${data[1]} total: ${total}`)
     return (
       <tr key={idx} className={s.bid_order}>
         <th

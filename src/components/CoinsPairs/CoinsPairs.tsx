@@ -16,6 +16,7 @@ const CoinsPairs = () => {
   const getTabClass = (tabVal: string) => {
     return tabVal === tab ? s.fav_icon_active : s.fav_icon;
   };
+  
   return (
     <div className={s.pairsBlock}>
       <div className={s.tabs}>
