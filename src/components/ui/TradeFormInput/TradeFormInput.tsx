@@ -3,12 +3,15 @@ import s from "./trade-input.module.scss";
 import { useState, useEffect } from "react";
 import { Icons } from "../../SVGIcons/icons";
 import { InputType, Transaction } from "../../../constants";
+import { getLeastUnit } from "../../../utils/helpers";
+import { useRef } from "react";
+import { useFormData } from "../../../hooks/useFormData";
+
 
 type InputProps = {
   currency: string;
   type: InputType;
   value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
   transaction: Transaction;
 };
 
@@ -19,11 +22,20 @@ const TradeFormInput: React.FC<InputProps> = ({
   type,
   transaction,
   value,
-  onChange,
 }) => {
-const [inputValue, setInputValue] = useState('')
 
+const [inputValue, setInputValue] = useState('')
+const {onFormChange}= useFormData()
+
+
+const leastUnit = useRef(0);
+const decimalPlaces = useRef(0);
+const { num, dec } = getLeastUnit(value);
+  leastUnit.current = num;
+  decimalPlaces.current = dec;
 useEffect(() => {
+ 
+  
   setInputValue(value);
 }, [value]);
 
@@ -35,11 +47,15 @@ useEffect(() => {
   const onClickChange = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.currentTarget as HTMLSpanElement;
     if (inputValue && !isNaN(Number(inputValue))) {
-      const newValue =
+      
+    
+    
+      const updatedValue =
         target.id === "increment"
-          ? String(Number(inputValue) + 1)
-          : String(Number(inputValue) - 1);
+          ? (Number(inputValue) + leastUnit.current)
+          : (Number(inputValue) - leastUnit.current)
 
+      const newValue = updatedValue.toFixed(8)
       setInputValue(newValue);
       const syntheticEvent = {
         target: {
@@ -49,13 +65,13 @@ useEffect(() => {
         },
       } as React.ChangeEvent<HTMLInputElement>;
   
-      onChange(syntheticEvent); 
+      onFormChange(syntheticEvent); 
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value); // Update local state
-    onChange(e); // Update parent state
+    onFormChange(e); // Update parent state
   };
 
   return (

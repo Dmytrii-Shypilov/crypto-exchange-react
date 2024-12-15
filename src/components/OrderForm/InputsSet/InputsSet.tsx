@@ -1,25 +1,25 @@
-"use client";
-
 import s from "./set.module.scss";
+import { memo } from "react";
 import { Form, InputType, Transaction, FormDataTypeObj } from "../../../constants";
 import TradeFormInput from "../../ui/TradeFormInput/TradeFormInput";
+import { useFormData } from "../../../hooks/useFormData";
+
 
 type InputsSetProps = {
-  set: Form;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
   pair: string;
   transaction: Transaction;
   formData: FormDataTypeObj
 };
 
 const InputsSet: React.FC<InputsSetProps> = ({
-  set,
-  onChange,
   pair,
   transaction,
   formData,
 }) => {
   const [base, quote] = pair.split("-");
+  
+  const {form} = useFormData()
+  console.log("INPUT SET")
 
   const formConfig = {
     [Form.Limit]: [
@@ -50,19 +50,18 @@ const InputsSet: React.FC<InputsSetProps> = ({
 
   return (
     <div className={s.inputs}>
-      {formConfig[set]?.map(({ type, currency }) => (
+      {formConfig[form]?.map(({ type, currency }) => (
 
       <TradeFormInput
-        key={type}
+      key={Math.random()}
         value={getFormFieldValue(type)}
         transaction={transaction}
         currency={currency}
         type={type}
-        onChange={onChange}
       />
     ))}
     </div>
   );
 };
 
-export default InputsSet;
+export default memo(InputsSet);

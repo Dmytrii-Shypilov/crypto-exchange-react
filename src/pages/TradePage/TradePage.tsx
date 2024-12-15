@@ -1,5 +1,6 @@
 import s from "./trade-page.module.scss";
 
+import { OrderFormProvider } from "../../context/TradeFormContext";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { StreamedTradeInfoType } from "../../constants";
@@ -11,61 +12,62 @@ import MyOrders from "../../components/MyOrders/MyOrders";
 import CoinsPairs from "../../components/CoinsPairs/CoinsPairs";
 
 const TradePage: React.FC = () => {
-  const [choosenPrice, setChoosenPrice] = useState("");
-  const [streamedtData, setStreamedData] =
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [streamedData, setStreamedData] =
     useState<StreamedTradeInfoType | null>(null);
   const { tradedPair } = useParams();
   const pair = tradedPair ?? "BTC-USDT";
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8000/trade/${tradedPair}`);
+    setIsLoading(true);
+    const socket = new WebSocket(`ws://localhost:8000/trade/${pair}`);
+
     socket.onmessage = (event) => {
       const newStreamedData = JSON.parse(event.data);
       setStreamedData(newStreamedData);
+      setIsLoading(false);
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
     };
 
     return () => {
       socket.close();
     };
-  }, [tradedPair]);
-
-  const changeChoosenPrice = (price: string) => {
-    setChoosenPrice(price);
-  };
+  }, [pair]);
 
   return (
-    <main>
-      {!streamedtData && (
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            textAlign: "center",
-            fontSize: 30,
-          }}
-        >
-          LOADING....
-        </div>
-      )}
-      {streamedtData && (
-        <section className={s.section}>
-          <TradePageHead pair={pair} streamedInfo={streamedtData.coinsInfo} />
-          <div className={s.trio_wrapper}>
-            <OrderBook
-              streamedInfo={streamedtData}
-              pair={pair}
-              changeChoosenPrice={changeChoosenPrice}
-            />
-            <div className={s.chart_form_wrapper}>
-              <TradingViewWidget token={pair} />
-              <OrderForm pair={pair} choosenPrice={choosenPrice} />
-            </div>
-            <CoinsPairs />
+    <OrderFormProvider>
+      <main>
+        {isLoading && (
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              textAlign: "center",
+              fontSize: 30,
+            }}
+          >
+            LOADING....
           </div>
-          <MyOrders />
-        </section>
-      )}
-    </main>
+        )}
+        {!isLoading && streamedData && (
+          <section className={s.section}>
+            <TradePageHead pair={pair} streamedInfo={streamedData.coinsInfo} />
+            <div className={s.trio_wrapper}>
+              <OrderBook streamedInfo={streamedData} pair={pair} />
+              <div className={s.chart_form_wrapper}>
+                <TradingViewWidget token={pair} />
+                <OrderForm pair={pair} />
+              </div>
+              <CoinsPairs />
+            </div>
+            <MyOrders />
+          </section>
+        )}
+      </main>
+    </OrderFormProvider>
   );
 };
 

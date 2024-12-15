@@ -12,7 +12,7 @@ const ArrowIcon: React.FC<ArrowProps> = ({fill, type}) =>   {
       fill={fill}
       viewBox="0 0 15 15"
       height="15px"
-      width="auto"
+      width="15px"
       transform={transform}
     >
       <path

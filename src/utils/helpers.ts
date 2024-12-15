@@ -38,6 +38,29 @@ const formatTradeNums = (
   return formattedObj;
 };
 
+export function getLeastUnit(num: string) {
+  const numStr = num.toString();
+
+  if (numStr.includes('.')) {
+    // Get the fractional part of the number
+    const fraction = numStr.split('.')
+    console.log(fraction)
+
+    // Find the number of significant decimal places
+    const decimalPlaces = fraction[1].endsWith('0') ? fraction[1].length+1 : fraction[1].length; 
+    
+    // Find the smallest unit by using the last significant digit
+    const leastUnit = Math.pow(10, -decimalPlaces); 
+
+    return { num: leastUnit, dec: decimalPlaces };
+  } else {
+    // If it's an integer, the least unit is 1
+    return { num: 1, dec: 0 };
+  }
+}
+
+
+
 export const formatNumber = {
   convertToUs,
   abreviateNumber,

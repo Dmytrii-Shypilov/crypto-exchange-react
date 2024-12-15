@@ -1,12 +1,14 @@
 
 import s from "./pairs.module.scss";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Icons } from "../SVGIcons/icons";
 import { useNavigate } from "react-router-dom";
 
 const CoinsPairs = () => {
   const [tab, setTab] = useState<string>("BTC");
+  const [searched, setSearched] = useState<string>('')
+  // const [fetched, setFetched] = useState({})
 
   const navigate = useNavigate()
 
@@ -16,10 +18,17 @@ const CoinsPairs = () => {
   const getTabClass = (tabVal: string) => {
     return tabVal === tab ? s.fav_icon_active : s.fav_icon;
   };
+
+  const onSearchedChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearched(e.target.value)
+  }
   
   return (
     <div className={s.pairsBlock}>
       <div className={s.tabs}>
+        <div>
+          <input onChange={onSearchedChange} value={searched} className={s.search_input} type="text" />
+        </div>
         <ul className={s.curr_list}>
           <li className={getClassName("BTC")} onClick={() => setTab("BTC")}>
             BTC

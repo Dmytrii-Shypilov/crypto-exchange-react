@@ -1,15 +1,12 @@
-"use client";
-
 import s from "./tabs.module.scss";
 
 import { useState } from "react";
+import { useFormData } from "../../../hooks/useFormData";
 import { Form } from "../../../constants";
 
-const FormTabs: React.FC<{
-  form: string;
-  setForm: (tabName: Form) => void;
-}> = ({ form, setForm }) => {
+const FormTabs: React.FC = () => {
   const [isDropped, setIsDropped] = useState(false);
+  const {form, onTabChange} = useFormData()
 
   const getTabClass = (tabVal: Form) => {
     return tabVal === form ? s.tabs_list_item_active : s.tabs_list_item;
@@ -22,12 +19,12 @@ const FormTabs: React.FC<{
     <div className={s.tabs_list}>
       <span
         className={getTabClass(Form.Limit)}
-        onClick={() => setForm(Form.Limit)}
+        onClick={() => onTabChange(Form.Limit)}
       >
         Limit
       </span>
       <span
-        onClick={() => setForm(Form.Market)}
+        onClick={() => onTabChange(Form.Market)}
         className={getTabClass(Form.Market)}
       >
         Market
@@ -38,7 +35,7 @@ const FormTabs: React.FC<{
         onMouseLeave={() => setIsDropped(false)}
       >
         <span
-          onClick={() => setForm(Form.StopLimit)}
+          onClick={() => onTabChange(Form.StopLimit)}
           className={getTabClass(
             form === Form.StopLimit ? Form.StopLimit : Form.StopMarket
           )}
@@ -49,13 +46,13 @@ const FormTabs: React.FC<{
           <div className={s.dropMenu}>
             <span
               className={getDroppedClass(Form.StopLimit)}
-              onClick={() => setForm(Form.StopLimit)}
+              onClick={() => onTabChange(Form.StopLimit)}
             >
               Stop Limit
             </span>
             <span
               className={getDroppedClass(Form.StopMarket)}
-              onClick={() => setForm(Form.StopMarket)}
+              onClick={() => onTabChange(Form.StopMarket)}
             >
               Stop Market
             </span>
