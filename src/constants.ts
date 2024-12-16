@@ -45,3 +45,7 @@ export type FormDataTypeObj =
     asks: [string[]]
   }  
   }
+
+  export type UserSignupType = {firstName: string, lastName: string, email: string, password: string}
+  export type UserLoginType = {email: string, password: string}
+  export type StoreUserType = {firstName: string, lastName: string, email: string, isLoading: boolean, isAuthenticated: boolean}
