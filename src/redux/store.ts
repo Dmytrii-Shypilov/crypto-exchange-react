@@ -16,12 +16,12 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 const persistConfig = {
   key: "user",
   storage,
-  whitelist: ["firstName", "lastName", "email", "isAuthenticated"],
+  whitelist: ['user', 'isAuthenticated']
 };
 
 const persReducer = persistReducer(persistConfig, userReducer);
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     user: persReducer,
   },

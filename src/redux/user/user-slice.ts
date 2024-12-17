@@ -20,9 +20,14 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signUpUser.pending, (state) => {
         state.isLoading =true;
-    }
-)}
-});
+    })
+    builder.addCase(signUpUser.fulfilled, (state, action)=> {
+      state.user = action.payload; 
+      state.isAuthenticated = true;
+      state.isLoading = false;
+    })
+
+}});
 
 
 export const {logoutUser} = userSlice.actions
