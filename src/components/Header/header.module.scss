@@ -94,3 +94,15 @@
     display: flex;
   }
 }
+
+.logout_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  cursor: pointer;
+  &:hover {
+    fill: var(--green)
+  }
+
+}

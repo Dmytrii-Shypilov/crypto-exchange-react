@@ -4,14 +4,27 @@ import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
+import { Icons } from "../SVGIcons/icons";
 import Container from "../Container/Container";
 import MobileMenu from "../MobileMenu/MobileMenu";
-import { Icons } from "../SVGIcons/icons";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserData } from "../../redux/user/user-selector";
+import { logoutUser } from "../../redux/user/user-operations";
+import { AppDispatch } from "../../redux/store";
+
+
+
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
+  const dispatch = useDispatch<AppDispatch>()
+  const {isAuthenticated, user: {id}} = useSelector(getUserData)
   const path = useLocation().pathname;
+
+  const onLogout = () => {
+    dispatch(logoutUser(id))
+  }
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) => {
     if (path.startsWith("/trade") && !isActive) {
@@ -31,10 +44,11 @@ const Header: React.FC = () => {
     return elements[element];
   };
 
+
   return (
     <header className={getClass("header")}>
       <Container>
-        <div className={s.wrapper}>
+         <div className={s.wrapper}>
           <NavLink to="/">
             <Icons.LogoIcon
               height="50px"
@@ -42,7 +56,7 @@ const Header: React.FC = () => {
               className={getClass("logo")}
             />
           </NavLink>
-          <nav className={s.nav}>
+          {isAuthenticated &&<nav className={s.nav}>
             <ul className={s.list}>
               <li className={s.list_item}>
                 <NavLink className={getLinkClass} to="/">
@@ -60,17 +74,19 @@ const Header: React.FC = () => {
                 </NavLink>
               </li>
             </ul>
-          </nav>
-          <span className={s.icon} onClick={() => setIsMenuOpen(true)}>
+          </nav>}
+          {isAuthenticated && <span className={s.logout_icon} onClick={onLogout}><Icons.LogoutIcon/></span>}
+          {isAuthenticated && <span className={s.icon} onClick={() => setIsMenuOpen(true)}>
             <Icons.MenuIcon />
-          </span>
+          </span>}
+          
         </div>
       </Container>
-      <MobileMenu
+     {isAuthenticated && <MobileMenu
         path={path}
         isMenuOpen={isMenuOpen}
         closeMenu={() => setIsMenuOpen(false)}
-      />
+      />}
     </header>
   );
 };
