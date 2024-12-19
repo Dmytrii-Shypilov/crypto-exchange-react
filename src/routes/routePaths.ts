@@ -4,5 +4,6 @@ export const ROUTES = {
     AUTH: '/auth',
     LOGIN: '/auth/login',
     SIGNUP: '/auth/signup',
-    LOGOUT: 'auth/logout'
+    LOGOUT: 'auth/logout',
+    COINS: '/coins'
 }

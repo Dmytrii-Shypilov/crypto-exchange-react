@@ -83,6 +83,7 @@ const Header: React.FC = () => {
         </div>
       </Container>
      {isAuthenticated && <MobileMenu
+        onLogout={onLogout}
         path={path}
         isMenuOpen={isMenuOpen}
         closeMenu={() => setIsMenuOpen(false)}

@@ -1,5 +1,5 @@
 .pairsBlock {
-  height: 420px;
+  height: 480px;
   width: calc(25% - 10px);
 
   background-color: var(--back-col-widget);
@@ -11,6 +11,7 @@
   align-items: center;
   justify-content: space-between;
   height: 38px;
+  margin-bottom: 20px;
   padding: 0 15px;
   border-bottom: 1px solid var(--border-col-gray);
 }
@@ -18,6 +19,23 @@
 .curr_list {
   display: flex;
   align-items: center;
+}
+
+.pairs_list {
+  height: 365px;
+  padding: 15px 0;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 100%;
+    background-color: var(--border-col-gray);
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--green)   ;     /* Dark gray thumb */
+    border-radius: 2px;     /* Rounded corners */
+
+  }
 }
 
 .icon {
@@ -82,4 +100,32 @@
   padding: 0 15px;
   font-size: 13px;
   color: var(--text-col-light);
+}
+
+.search_input {
+  color: var(--text-col-light);
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  background-color: transparent;
+  border: 1px solid var(--border-col-gray);
+  border-radius: var(--border-rad-widget);
+}
+
+.search_icon {
+  position: absolute;
+  bottom: 5px;
+  left: 20px;
+  display: flex;
+  width: 15px;
+  align-items: center;
+  justify-content: center;
+  fill: var(--text-col-gray);
+}
+
+.search_field {
+  position: relative;
+  padding-left: 15px;
+  padding-top: 15px;
 }

@@ -104,5 +104,7 @@
   &:hover {
     fill: var(--green)
   }
-
+  @include mq.screen-size(mobile) {
+    display: none;
+  }
 }

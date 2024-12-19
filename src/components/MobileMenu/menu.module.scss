@@ -27,23 +27,21 @@
   width: max-content;
   display: flex;
   margin-bottom: 30px;
-  
-  
+
   &:hover {
     color: var(--accent-mb);
   }
 }
 
 .nav {
-    width: max-content;
-    margin: 0 auto;
+  width: max-content;
+  margin: 0 auto;
 }
 
 .nav_list_item {
   &:not(:last-of-type) {
     margin-bottom: 10px;
   }
-
 }
 
 .link {
@@ -54,4 +52,15 @@
 .link_active {
   @extend .link;
   color: var(--accent-mb);
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin-top: 20px;
+  border-radius: var(--border-rad-widget);
+  color: var(--text-col-light);
+  background-color: var(--green);
 }

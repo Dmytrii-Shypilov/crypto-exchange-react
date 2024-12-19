@@ -5,6 +5,7 @@ import IconClose from "./IconClose";
 import TriangleArrowIcon from "./TriangleArrowIcon";
 import StarIcon from "./StarIcon";
 import LogoutIcon from "./LogoutIcon";
+import SearchIcon from "./SearchIcon";
 
 export const Icons = {
   ArrowIcon,
@@ -13,5 +14,6 @@ export const Icons = {
   IconClose,
   TriangleArrowIcon,
   StarIcon,
-  LogoutIcon,
+  SearchIcon,
+  LogoutIcon
 };

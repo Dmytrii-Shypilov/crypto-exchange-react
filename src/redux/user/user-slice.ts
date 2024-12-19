@@ -5,16 +5,18 @@ const initialState = {
   user: {firstName: null, lastName: null, email: null, id: null},
   isAuthenticated: false,
   isLoading: false,
+  isError: false,
+  message:''
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // logoutUser(state) {
-    //   state.user = null;
-    //   state.isAuthenticated = false;
-    // },
+    revokeError(state) {
+      state.isError =false
+      state.message = ''
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(signUpUser.pending, (state) => {
@@ -25,6 +27,12 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
       state.isLoading = false;
     });
+    builder.addCase(signUpUser.rejected, (state, action) => {
+      const payload = action.payload as {detail: string}
+      state.message = payload.detail
+      state.isError = true
+      state.isLoading = false
+    });
     builder.addCase(logoutUser.pending, (state) => {
       state.isLoading = true;
     });
@@ -32,6 +40,12 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = false;
       state.user = initialState.user;
+    });
+    builder.addCase(logoutUser.rejected, (state, action) => {
+      const payload = action.payload as {detail: string}
+      state.message = payload.detail
+      state.isError = true
+      state.isLoading = false
     });
     builder.addCase(loginUser.pending, (state) => {
       state.isLoading = true;
@@ -41,8 +55,14 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
     });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      const payload = action.payload as {detail: string}
+      state.message = payload.detail
+      state.isError = true
+      state.isLoading = false
+    });
   },
 });
 
-// export const {logoutUser} = userSlice.actions
+export const {revokeError} = userSlice.actions
 export default userSlice.reducer;

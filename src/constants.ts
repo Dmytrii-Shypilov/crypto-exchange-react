@@ -49,3 +49,6 @@ export type FormDataTypeObj =
   export type UserSignupType = {firstName: string, lastName: string, email: string, password: string}
   export type UserLoginType = {email: string, password: string}
   export type StoreUserType = {firstName: string, lastName: string, email: string, isLoading: boolean, isAuthenticated: boolean}
+
+
+  export type TradedPairsResponseType = {tradedPairs: { pair: string; change: string; lastPrice: string }[], favCoins: string[]}

@@ -12,9 +12,10 @@ type MenuProps = {
   closeMenu: () => void;
   isMenuOpen: boolean;
   path: string
+  onLogout: ()=> void
 };
 
-const MobileMenu: React.FC<MenuProps> = ({ closeMenu, isMenuOpen, path }) => {
+const MobileMenu: React.FC<MenuProps> = ({ closeMenu, isMenuOpen, path, onLogout }) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
 
@@ -92,7 +93,9 @@ const MobileMenu: React.FC<MenuProps> = ({ closeMenu, isMenuOpen, path }) => {
                     Contact us
                   </span>
                 </li>
-              </ul>
+                </ul>
+                <span onClick={onLogout} className={s.logout}>log out</span>
+             
             </nav>
           </motion.div>
         </>
