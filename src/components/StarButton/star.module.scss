@@ -1,0 +1,12 @@
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill: var(--text-col-gray);
+    cursor: pointer;
+}
+
+.icon_fav {
+    @extend .icon;
+    fill: var(--golden);
+}

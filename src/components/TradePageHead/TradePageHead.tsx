@@ -1,10 +1,10 @@
 import s from "./head.module.scss";
 
 
-import { Icons } from "../SVGIcons/icons";
 import { StreamedTradeInfoType } from "../../constants";
 import { formatNumber } from "../../utils/helpers";
 import PriceIndicator from "../PriceIndicator/PriceIndicator";
+import StarButton from "../StarButton/StarButton";
 
 
 type TradePageHeadProps = {
@@ -29,7 +29,7 @@ const TradePageHead: React.FC<TradePageHeadProps> = ({
   return (
     <div className={s.head}>
       <span className={s.icon}>
-        <Icons.StarIcon />
+       <StarButton size='25' pair={`${base}/${quote}`}/> 
       </span>
       <span className={s.pair}>{`${base}/${quote}`}</span>
       <div className={s.price}>

@@ -32,25 +32,26 @@
     border-radius: 2px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--green)   ;     /* Dark gray thumb */
-    border-radius: 2px;     /* Rounded corners */
-
+    background: var(--green); /* Dark gray thumb */
+    border-radius: 2px; /* Rounded corners */
   }
 }
 
 .icon {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.fav_icon {
+  display: flex;
   align-items: start;
   justify-content: center;
   height: 20px;
   width: auto;
-  margin-right: 5px;
   cursor: pointer;
   fill: var(--text-col-gray);
-}
-
-.fav_icon {
-  @extend .icon;
   padding: 2px;
   border: 1px solid var(--border-col-gray);
   border-radius: 4px;
@@ -100,6 +101,14 @@
   padding: 0 15px;
   font-size: 13px;
   color: var(--text-col-light);
+  &:hover {
+    background-color: var( --back-col-dark-accent);
+  }
+}
+
+.pair_fav {
+  @extend .pair;
+  justify-content: start;
 }
 
 .search_input {
@@ -128,4 +137,30 @@
   position: relative;
   padding-left: 15px;
   padding-top: 15px;
+}
+
+.pair_item {
+  width: calc(100% - 25px);
+  font-size: 12px;
+}
+
+.pair_name {
+  @extend .pair_item;
+  cursor: pointer;
+}
+
+.price {
+  @extend .pair_item;
+  text-align: right;
+}
+
+.change {
+  @extend .pair_item;
+  text-align: right;
+  color: var(--green)
+}
+
+.change_red {
+  @extend .change;
+  color: var(--red);
 }
