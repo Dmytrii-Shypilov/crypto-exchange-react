@@ -54,6 +54,7 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.isAuthenticated = true;
       state.user = action.payload;
+      state.isError = false
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       const payload = action.payload as {detail: string}

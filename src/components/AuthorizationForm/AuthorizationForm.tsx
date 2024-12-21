@@ -9,6 +9,7 @@ import { signUpUser, loginUser } from "../../redux/user/user-operations";
 import { getUserData } from "../../redux/user/user-selector";
 import { AppDispatch } from "../../redux/store";
 import { revokeError } from "../../redux/user/user-slice";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 // import { UserLoginType, UserSignupType } from "../../constants";
 
 const AuthorizationForm: React.FC = () => {
@@ -131,8 +132,8 @@ const AuthorizationForm: React.FC = () => {
 
       {formType === "signup" &&
         renderInputField("confirmPassword", "Confirm Password", "password")}
-      {isLoading && <p>...Loading</p>}
-      {isError && <p className={s.error}>{message}</p>}
+      {isLoading && <LoadingSpinner/>}
+      {isError && !isLoading && <p className={s.error}>{message}</p>}
       <div className={s.btnWrapper}>
         <Button width="100%" type="submit">
           {formType === "signup" ? "Sign Up" : "Log In"}

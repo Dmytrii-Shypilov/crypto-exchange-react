@@ -21,7 +21,7 @@ const CoinsPairs = () => {
   });
   const favoriteCoins = useSelector(getFavCoins);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+const dispatch = useDispatch()
 
   useEffect(() => {
     if (tab !== "FAV") {
@@ -42,6 +42,16 @@ const CoinsPairs = () => {
     dispatch(setFavoriteCoins(fetched.favCoins));
   }, [tab, dispatch, fetched]);
 
+  // Filter pairs based on the search input
+  const filteredPairs = fetched.tradedPairs.filter((el) =>
+    el.pair.toLowerCase().includes(searched.toLowerCase())
+  );
+
+  // Filter favorite coins based on the search input
+  const filteredFavCoins = favoriteCoins.filter((el) =>
+    el.toLowerCase().includes(searched.toLowerCase())
+  );
+
   const getClassName = (coin: string) => {
     return tab === coin ? s.currency_active : s.currency;
   };
@@ -53,7 +63,12 @@ const CoinsPairs = () => {
     setSearched(e.target.value);
   };
 
-  const pairsElements = fetched.tradedPairs.map((el) => {
+  const onTabChange = (tab: string) => {
+    setTab(tab)
+    setSearched('')
+  }
+
+  const pairsElements = filteredPairs.map((el) => {
     const coinParam = el.pair.split("/").join("-");
     const isChangeDown = el.change.startsWith('-')
     return (
@@ -71,7 +86,7 @@ const CoinsPairs = () => {
     );
   });
 
-  const favCoinsElements = favoriteCoins.map((el) => {
+  const favCoinsElements = filteredFavCoins.map((el) => {
     const coinParam = el.split("/").join("-");
     return (
       <li key={el} className={s.pair_fav}>
@@ -99,18 +114,18 @@ const CoinsPairs = () => {
       </div>
       <div className={s.tabs}>
         <ul className={s.curr_list}>
-          <li className={getClassName("BTC")} onClick={() => setTab("BTC")}>
+          <li  className={getClassName("BTC")} onClick={onTabChange.bind(null, 'BTC')}>
             BTC
           </li>
-          <li className={getClassName("ETH")} onClick={() => setTab("ETH")}>
+          <li className={getClassName("ETH")} onClick={onTabChange.bind(null, 'ETH')}>
             ETH
           </li>
-          <li className={getClassName("USDT")} onClick={() => setTab("USDT")}>
+          <li  className={getClassName("USDT")} onClick={onTabChange.bind(null, 'USDT')}>
             USDT
           </li>
         </ul>
 
-        <span className={getTabClass("FAV")} onClick={() => setTab("FAV")}>
+        <span className={getTabClass("FAV")} onClick={onTabChange.bind(null, 'FAV')}>
           <Icons.StarIcon />
         </span>
       </div>
