@@ -21,13 +21,14 @@ const Header: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const {isAuthenticated, user: {id}} = useSelector(getUserData)
   const path = useLocation().pathname;
+  const isTradePath = path.startsWith("/trade") 
 
   const onLogout = () => {
     dispatch(logoutUser(id))
   }
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) => {
-    if (path.startsWith("/trade") && !isActive) {
+    if (isTradePath && !isActive) {
       return s.link_dark;
     } else if (isActive) {
       return s.link_active;
@@ -38,11 +39,13 @@ const Header: React.FC = () => {
 
   const getClass = (element: string) => {
     const elements: { [key: string]: string } = {
-      header: path.includes("trade") ? s.header_dark : s.header,
-      logo: path.includes("trade") ? s.logo_dark : s.logo,
+      header: isTradePath ? s.header_dark : s.header,
+      logo: isTradePath ? s.logo_dark : s.logo,
     };
     return elements[element];
   };
+
+
 
 
   return (
@@ -75,7 +78,7 @@ const Header: React.FC = () => {
               </li>
             </ul>
           </nav>}
-          {isAuthenticated && <span className={s.logout_icon} onClick={onLogout}><Icons.LogoutIcon/></span>}
+          {isAuthenticated && <span className={isTradePath? s.logout_icon_dark :s.logout_icon} onClick={onLogout}><Icons.LogoutIcon/></span>}
           {isAuthenticated && <span className={s.icon} onClick={() => setIsMenuOpen(true)}>
             <Icons.MenuIcon />
           </span>}

@@ -13,11 +13,11 @@ const OrderForm: React.FC<{ pair: string}> = ({
 }) => {
 
   const [base, quote] = pair.split("-");
-  const { formData} = useFormData()
+  const { formData, onFormSubmit, isLoading} = useFormData()
 
-console.log("Form")
+
   return (
-    <form className={s.form} action="">
+    <form className={s.form} onSubmit={onFormSubmit}>
       <FormTabs  />
       <div className={s.fields}>
         <div className={s.fields_block}>
@@ -32,7 +32,7 @@ console.log("Form")
               <span>{`-- ${quote}`}</span>
             </div>
      
-          <button className={s.buy_btn}>{`Buy ${base}`}</button>
+          <button id='buy' className={s.buy_btn}>{isLoading.value && isLoading.transaction === 'buy'? 'Posting...' :`Buy ${base}`}</button>
         </div>
         <div className={s.fields_block}>
           <div>
@@ -48,7 +48,7 @@ console.log("Form")
             </div>
        
           </div>
-          <button className={s.sell_btn}>{`Sell ${base}`}</button>
+          <button id='sell'  className={s.sell_btn}>{isLoading.value && isLoading.transaction === 'sell'? 'Posting...' :`Sell ${base}`}</button>
         </div>
       </div>
     </form>

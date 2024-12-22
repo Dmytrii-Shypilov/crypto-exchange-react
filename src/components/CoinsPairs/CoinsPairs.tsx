@@ -7,40 +7,37 @@ import { coinsAPI } from "../../api/coinsAPI";
 import { TradedPairsResponseType } from "../../constants";
 import { getFavCoins } from "../../redux/coins/coins-selector";
 import { useSelector, useDispatch } from "react-redux";
-import { setFavoriteCoins } from "../../redux/coins/coins-slice";
+import { AppDispatch } from "../../redux/store";
+import { getFavoritePairs } from "../../redux/coins/coins-operations";
 import StarButton from "../StarButton/StarButton";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const CoinsPairs = () => {
   const [tab, setTab] = useState<string>("BTC");
   const [searched, setSearched] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [fetched, setFetched] = useState<TradedPairsResponseType>({
     tradedPairs: [],
-    favCoins: [],
   });
-  const favoriteCoins = useSelector(getFavCoins);
+  const { favs } = useSelector(getFavCoins);
   const navigate = useNavigate();
-const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (tab !== "FAV") {
       const getCoinsInfo = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         const coinsInfo = await coinsAPI.fetchTradedCoins(tab);
+        dispatch(getFavoritePairs());
+        setIsLoading(false);
         setFetched(coinsInfo);
-        setIsLoading(false)
-        
       };
-     
+    
       getCoinsInfo();
      
     }
-  }, [tab]);
-
-  useEffect(() => {
-    dispatch(setFavoriteCoins(fetched.favCoins));
-  }, [tab, dispatch, fetched]);
+   
+  }, [tab, dispatch]);
 
   // Filter pairs based on the search input
   const filteredPairs = fetched.tradedPairs.filter((el) =>
@@ -48,7 +45,7 @@ const dispatch = useDispatch()
   );
 
   // Filter favorite coins based on the search input
-  const filteredFavCoins = favoriteCoins.filter((el) =>
+  const filteredFavCoins = (favs || []).filter((el) =>
     el.toLowerCase().includes(searched.toLowerCase())
   );
 
@@ -64,24 +61,28 @@ const dispatch = useDispatch()
   };
 
   const onTabChange = (tab: string) => {
-    setTab(tab)
-    setSearched('')
-  }
+    setTab(tab);
+    setSearched("");
+  };
 
   const pairsElements = filteredPairs.map((el) => {
     const coinParam = el.pair.split("/").join("-");
-    const isChangeDown = el.change.startsWith('-')
+    const isChangeDown = el.change.startsWith("-");
     return (
-      <li
-        className={s.pair}
-        key={el.pair}
-      >
+      <li className={s.pair} key={el.pair}>
         <span className={s.icon}>
-          <StarButton pair={el.pair} size={'20px'}/>
+          <StarButton pair={el.pair} size={"20px"} />
         </span>
-        <span className={s.pair_name}  onClick={() => navigate(`/trade/${coinParam}`)}>{el.pair}</span>
+        <span
+          className={s.pair_name}
+          onClick={() => navigate(`/trade/${coinParam}`)}
+        >
+          {el.pair}
+        </span>
         <span className={s.price}>{el.lastPrice}</span>
-        <span className={isChangeDown? s.change_red : s.change}>{el.change + "%"}</span>
+        <span className={isChangeDown ? s.change_red : s.change}>
+          {el.change + "%"}
+        </span>
       </li>
     );
   });
@@ -91,9 +92,14 @@ const dispatch = useDispatch()
     return (
       <li key={el} className={s.pair_fav}>
         <span className={s.icon}>
-          <StarButton size='25px' pair={el}/>
+          <StarButton size="20px" pair={el} />
         </span>
-        <span onClick={() => navigate(`/trade/${coinParam}`)} className={s.pair_name}>{el}</span>
+        <span
+          onClick={() => navigate(`/trade/${coinParam}`)}
+          className={s.pair_name}
+        >
+          {el}
+        </span>
       </li>
     );
   });
@@ -114,24 +120,36 @@ const dispatch = useDispatch()
       </div>
       <div className={s.tabs}>
         <ul className={s.curr_list}>
-          <li  className={getClassName("BTC")} onClick={onTabChange.bind(null, 'BTC')}>
+          <li
+            className={getClassName("BTC")}
+            onClick={onTabChange.bind(null, "BTC")}
+          >
             BTC
           </li>
-          <li className={getClassName("ETH")} onClick={onTabChange.bind(null, 'ETH')}>
+          <li
+            className={getClassName("ETH")}
+            onClick={onTabChange.bind(null, "ETH")}
+          >
             ETH
           </li>
-          <li  className={getClassName("USDT")} onClick={onTabChange.bind(null, 'USDT')}>
+          <li
+            className={getClassName("USDT")}
+            onClick={onTabChange.bind(null, "USDT")}
+          >
             USDT
           </li>
         </ul>
 
-        <span className={getTabClass("FAV")} onClick={onTabChange.bind(null, 'FAV')}>
+        <span
+          className={getTabClass("FAV")}
+          onClick={onTabChange.bind(null, "FAV")}
+        >
           <Icons.StarIcon />
         </span>
       </div>
 
       <ul className={s.pairs_list}>
-        {isLoading && <LoadingSpinner/>}
+        {isLoading && <LoadingSpinner size="30px" />}
         {!isLoading && (tab === "FAV" ? favCoinsElements : pairsElements)}
       </ul>
     </div>

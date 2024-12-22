@@ -17,12 +17,9 @@ const TradePageHead: React.FC<TradePageHeadProps> = ({
   streamedInfo,
 }) => {
   const [base, quote] = pair.split("-");
-  const formatedInfo = formatNumber.formatTradeNums(streamedInfo, "priceChangePercent");
+  const formatedInfo = formatNumber.formatTradeNums(streamedInfo, ['priceChange',"priceChangePercent"]);
   const changeSign = formatedInfo.priceChange.startsWith("-") ? "-" : "+";
-  const percentsChange =
-    changeSign +
-    Math.abs(Number(formatedInfo.priceChangePercent)).toFixed(2) +
-    "%";
+  
 
   const className = changeSign === "+" ? s.price_change : s.price_change_neg;
 
@@ -40,7 +37,7 @@ const TradePageHead: React.FC<TradePageHeadProps> = ({
           <span className={s.title}>24h Change</span>
           <div className={className}>
             <span className={s.figure}>{formatedInfo.priceChange}</span>
-            <span className={s.percents}>{percentsChange}</span>
+            <span className={s.percents}>{formatedInfo.priceChangePercent}%</span>
           </div>
         </li>
         <li className={s.list_item}>

@@ -5,7 +5,7 @@ type ArrowProps =  {
 }
 
 const ArrowIcon: React.FC<ArrowProps> = ({fill, type}) =>   {
- const transform = type === 'down' ?"rotate(180, 0, 0)" : 'none'
+ const transform = type === 'down' ?"rotate(180, 0, 0)" : 'rotate(0, 0, 0)'
 
   return (
     <svg

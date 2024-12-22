@@ -51,4 +51,4 @@ export type FormDataTypeObj =
   export type StoreUserType = {firstName: string, lastName: string, email: string, isLoading: boolean, isAuthenticated: boolean}
 
 
-  export type TradedPairsResponseType = {tradedPairs: { pair: string; change: string; lastPrice: string }[], favCoins: string[]}
+  export type TradedPairsResponseType = {tradedPairs: { pair: string; change: string; lastPrice: string }[]}

@@ -1,0 +1,12 @@
+.fallback {
+    display: flex;
+    height: calc(100vh - 70px);
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.fallback_dark {
+    @extend .fallback;
+    background-color: var(--back-col-dark);
+}

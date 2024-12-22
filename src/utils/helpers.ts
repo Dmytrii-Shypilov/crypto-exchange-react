@@ -1,3 +1,5 @@
+
+
 const abreviateNumber = (number: string | number) => {
   const num = Number(number);
 
@@ -22,47 +24,57 @@ const convertToUs = (num: string) => {
   }
 };
 
+const removeExtraZeros = (num: string) => {
+  const number = Number(num.replace('-', ''));
+
+  if (number > 1) {
+    return number.toFixed(2);
+  }
+  return num;
+};
+
 const formatTradeNums = (
   targetObj: Record<string, string>,
-  ignoreKey: string = ""
+  ignoreKeys: string[]
 ): Record<string, string> => {
   const formattedObj: Record<string, string> = {};
 
   for (const key in targetObj) {
     if (Object.prototype.hasOwnProperty.call(targetObj, key)) {
-      formattedObj[key] =
-        key !== ignoreKey ? convertToUs(targetObj[key]) : targetObj[key];
+      formattedObj[key] = !ignoreKeys.includes(key)
+        ? convertToUs(targetObj[key])
+        : removeExtraZeros(targetObj[key]);
     }
   }
 
   return formattedObj;
 };
 
-export function getLeastUnit(num: string) {
-  const numStr = num.toString();
 
-  if (numStr.includes('.')) {
-    // Get the fractional part of the number
-    const fraction = numStr.split('.')
-    console.log(fraction)
 
-    // Find the number of significant decimal places
-    const decimalPlaces = fraction[1].endsWith('0') ? fraction[1].length+1 : fraction[1].length; 
-    
-    // Find the smallest unit by using the last significant digit
-    const leastUnit = Math.pow(10, -decimalPlaces); 
+export const doOperation = (num: string, operation: "+" | "-") => {
+  const number = Number(num);
+  if (number < 1 && number !== 0) {
+    const dig = Number(num.split(".")[1]);
+    const n = operation === "-" ? String(dig - 1) : String(dig + 1);
 
-    return { num: leastUnit, dec: decimalPlaces };
+    const sliceTo =
+      n.length > dig.toString().length && n.length !== dig.toString().length
+        ? num.length - n.length
+        : -n.length;
+    const f = num.slice(0, sliceTo).replace("1", "0");
+
+    return f + n;
   } else {
-    // If it's an integer, the least unit is 1
-    return { num: 1, dec: 0 };
+    return operation === "-" ? String(number - 1) : String(number + 1);
   }
-}
+};
 
 
 
 export const formatNumber = {
   convertToUs,
   abreviateNumber,
-  formatTradeNums,
+  removeExtraZeros,
+formatTradeNums
 };

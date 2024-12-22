@@ -5,82 +5,71 @@ import PriceIndicator from "../PriceIndicator/PriceIndicator";
 import { formatNumber } from "../../utils/helpers";
 import { useFormData } from "../../hooks/useFormData";
 
-
-
 type OrderBookProps = {
   pair: string;
   streamedInfo: StreamedTradeInfoType;
 };
 
-const OrderBook: React.FC<OrderBookProps> = ({
-  pair,
-  streamedInfo,
-}) => {
+const OrderBook: React.FC<OrderBookProps> = ({ pair, streamedInfo }) => {
   const [base, quote] = pair.split("-");
 
-  const {setChoosenPrice} = useFormData()
+  const { setChoosenPrice } = useFormData();
 
-  const bids =streamedInfo.orderBook["bids"].map((data, idx) => {
-    const total = formatNumber.abreviateNumber(Number(data[0]) * Number(data[1]))
-    return (
-      <tr key={idx} className={s.bid_order}>
-        <th
-          className={s.cell}
-          onClick={() => setChoosenPrice(Number(data[0]).toString())}
-        >
-          {Number(data[0]).toString()}
-        </th>
-        <th className={s.cell}>{formatNumber.abreviateNumber(data[1])}</th>
-        <th className={s.cell}>{total}</th>
-      </tr>
+  const choosePrice = (price: string) => {
+    const formatted = formatNumber.removeExtraZeros(price);
+    setChoosenPrice(formatted);
+  };
+
+  const bids = streamedInfo.orderBook["bids"].map((data, idx) => {
+    const total = formatNumber.abreviateNumber(
+      Number(data[0]) * Number(data[1])
     );
-  })
+
+    return (
+      <li key={idx} className={s.bid_order}>
+        <span className={s.cell} onClick={() => choosePrice(data[0])}>
+          {formatNumber.removeExtraZeros(data[0])}
+        </span>
+        <span className={s.cell}>{formatNumber.abreviateNumber(data[1])}</span>
+        <span className={s.cell}>{total}</span>
+      </li>
+    );
+  });
 
   const asks = streamedInfo.orderBook["asks"].reverse().map((data, idx) => {
-    const total = formatNumber.abreviateNumber(Number(data[0]) * Number(data[1]))
-    return (
-      <tr key={idx} className={s.ask_order}>
-        <th
-          className={s.cell}
-          onClick={() => setChoosenPrice(Number(data[0]).toString())}
-        >
-         {Number(data[0]).toString()}
-        </th>
-        <th className={s.cell}>{formatNumber.abreviateNumber(data[1])}</th>
-        <th className={s.cell}>{total}</th>
-      </tr>
+    const total = formatNumber.abreviateNumber(
+      Number(data[0]) * Number(data[1])
     );
-  })
+    return (
+      <li key={idx} className={s.ask_order}>
+        <span className={s.cell} onClick={() => choosePrice(data[0])}>
+          {formatNumber.removeExtraZeros(data[0])}
+        </span>
+        <span className={s.cell}>{formatNumber.abreviateNumber(data[1])}</span>
+        <span className={s.cell}>{total}</span>
+      </li>
+    );
+  });
 
   return (
     <div className={s.book}>
       <span className={s.name}>Order Book</span>
 
       <div className={s.tables}>
-        <table className={s.table}>
-          <thead className={s.head}>
-            <tr>
-              <th className={s.cell}>Price{` (${quote})`}</th>
-              <th className={s.cell}>Amount{` (${base})`}</th>
-              <th className={s.cell}>Total</th>
-            </tr>
-          </thead>
+        <ul className={s.head}>
+          <li className={s.cell}>Price{` (${quote})`}</li>
+          <li className={s.cell}>Amount{` (${base})`}</li>
+          <li className={s.cell}>Total</li>
+        </ul>
 
-          <tbody>
-            {bids}
-          </tbody>
-        </table>
+        <ul>{bids}</ul>
         <div className={s.price_display}>
           <PriceIndicator
             price={formatNumber.convertToUs(streamedInfo.coinsInfo.lastPrice)}
             icon={true}
           />
         </div>
-        <table className={s.table}>
-          <tbody>
-            {asks}
-          </tbody>
-        </table>
+        <ul>{asks}</ul>
       </div>
     </div>
   );

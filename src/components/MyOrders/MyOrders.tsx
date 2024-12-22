@@ -1,11 +1,10 @@
-'use client'
-
-
 import s from "./orders.module.scss";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormData } from "../../hooks/useFormData";
+import { tradeAPI } from "../../api/tradeAPI";
 
-const orders = [
+const  Orders = [
   {
     id: "1212",
     date: "23-12-2024",
@@ -57,9 +56,26 @@ const executed = [
 
 const MyOrders = () => {
   const [tab, setTab] = useState<string>("open");
+  const [orders, setOrders] = useState<[]>([]);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const isOpenOrder = tab === "open";
 
-  
+  const { isOrderPosted, setIsOrderPosted } = useFormData();
+
+  useEffect(() => {
+    if (isOrderPosted) {
+      const getOrders = async () => {
+        // setIsLoading(true);
+        const orders = await tradeAPI.fetchOrders();
+        setOrders(orders);
+        // setIsLoading(false);
+      };
+      getOrders();
+      setIsOrderPosted(false)
+      console.log('orders fetched')
+    }
+  }, [isOrderPosted, setIsOrderPosted]);
+
   const names = [
     isOpenOrder ? "Date" : "Order Time",
     "Pair",
@@ -69,19 +85,22 @@ const MyOrders = () => {
     "Amount",
     isOpenOrder ? "Filled" : "Executed",
     "Total",
-    'Cancel'
+    "Cancel",
   ];
-  if (tab === 'history') {
-    names.pop()
+  if (tab === "history") {
+    names.pop();
   }
-  const getTabClass = (curr: string) => curr === tab ? s.tab_open: s.tab 
+  const getTabClass = (curr: string) => (curr === tab ? s.tab_open : s.tab);
   return (
     <div className={s.orders_block}>
       <ul className={s.tab_list}>
-        <li className={getTabClass('open')} onClick={() => setTab("open")}>
-          {`Open Orders(${orders.length})`}
+        <li className={getTabClass("open")} onClick={() => setTab("open")}>
+          {`Open Orders(${MyOrders.length})`}
         </li>
-        <li className={getTabClass('history')} onClick={() => setTab("history")}>
+        <li
+          className={getTabClass("history")}
+          onClick={() => setTab("history")}
+        >
           Trade History
         </li>
       </ul>
@@ -93,7 +112,7 @@ const MyOrders = () => {
         ))}
       </ul>
       <ul className={s.order_list}>
-        {orders.map((order) => (
+        {Orders.map((order) => (
           <li key={order.id} className={s.order}>
             {isOpenOrder && <span className={s.order_item}>{order.date}</span>}
             {!isOpenOrder && (
@@ -101,9 +120,7 @@ const MyOrders = () => {
             )}
             <span className={s.order_item}>{order.pair}</span>
             <span className={s.order_item}>{order.type}</span>
-            <span
-              className={order.side === "buy" ? s.order_buy : s.order_sell}
-            >
+            <span className={order.side === "buy" ? s.order_buy : s.order_sell}>
               {order.side}
             </span>
             <span className={s.order_item}>{order.price}</span>
@@ -115,7 +132,11 @@ const MyOrders = () => {
               <span className={s.order_item}>{executed[0].executed}</span>
             )}
             <span className={s.order_item}>{order.total}</span>
-            {isOpenOrder && <span id={order.id} className={s.btn}>cancel</span>}
+            {isOpenOrder && (
+              <span id={order.id} className={s.btn}>
+                cancel
+              </span>
+            )}
           </li>
         ))}
       </ul>

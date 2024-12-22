@@ -10,6 +10,8 @@ import OrderBook from "../../components/OrderBook/OrderBook";
 import OrderForm from "../../components/OrderForm/OrderForm";
 import MyOrders from "../../components/MyOrders/MyOrders";
 import CoinsPairs from "../../components/CoinsPairs/CoinsPairs";
+import LoadingFallback from "../../components/LoadingFallback/LoadingFallback";
+
 
 const TradePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,18 +42,7 @@ const TradePage: React.FC = () => {
   return (
     <OrderFormProvider>
       <main>
-        {isLoading && (
-          <div
-            style={{
-              height: "100%",
-              width: "100%",
-              textAlign: "center",
-              fontSize: 30,
-            }}
-          >
-            LOADING....
-          </div>
-        )}
+        {isLoading && <LoadingFallback/>}
         {!isLoading && streamedData && (
           <section className={s.section}>
             <TradePageHead pair={pair} streamedInfo={streamedData.coinsInfo} />

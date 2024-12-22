@@ -1,9 +1,15 @@
-import React, { createContext, useEffect, useState, useMemo } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 
-import { FormDataType, Form } from "../constants";
+import { FormDataType, Form, Transaction } from "../constants";
+import { tradeAPI } from "../api/tradeAPI";
 
-
-const formDefaults= {
+const formDefaults = {
   [Form.Limit]: {
     price: "",
     amount: "",
@@ -31,9 +37,13 @@ type FormDataContextType = {
   setChoosenPrice: React.Dispatch<React.SetStateAction<string>>;
   onTabChange: (tabName: Form) => void;
   onFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isOrderPosted: boolean;
+  setIsOrderPosted: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: { value: boolean; transaction: Transaction | null };
 };
 
-const OrderFormContext = createContext<FormDataContextType | undefined>(
+const TradeFormContext = createContext<FormDataContextType | undefined>(
   undefined
 );
 
@@ -42,40 +52,15 @@ export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [choosenPrice, setChoosenPrice] = useState<string>("");
   const [form, setForm] = useState<Form>(Form.Limit);
-
+  const [isOrderPosted, setIsOrderPosted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<{
+    value: boolean;
+    transaction: Transaction | null;
+  }>({ value: false, transaction: null });
   const [formData, setFormData] = useState<FormDataType>({
     buy: { ...formDefaults[Form.Limit] },
     sell: { ...formDefaults[Form.Limit] },
   });
-
-  //   useEffect(() => {
-
-  //     setFormData({ buy: { ...formDefaults[form] }, sell: { ...formDefaults[form] }});
-  //     if (choosenPrice) {
-  //       setFormData((prevState) => {
-  //         const updatedFields = ["price", "limit", "stop"].reduce(
-  //           (state, field) => {
-  //             if (field in prevState.buy) {
-  //               state[field] = choosenPrice;
-  //             }
-  //             return state;
-  //           },
-  //           {} as Record<string, string>
-  //         );
-  //         return {
-  //           buy: {
-  //             ...prevState.buy,
-  //             ...updatedFields,
-  //           },
-  //           sell: {
-  //             ...prevState.sell,
-  //             ...updatedFields,
-  //           },
-  //         };
-  //       });
-  //     }
-
-  //   }, [form, choosenPrice]);
 
   useEffect(() => {
     // Reset form data based on the selected form
@@ -110,6 +95,44 @@ export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
     setForm(tabName);
   };
 
+  const onFormSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const newFormData = {
+        buy: { ...formDefaults[form] },
+        sell: { ...formDefaults[form] },
+      };
+      // Get the submit button that triggered the form submission
+      const submitter = (e.nativeEvent as SubmitEvent)
+        .submitter as HTMLButtonElement;
+
+      if (submitter) {
+        const buttonId = submitter.id as Transaction; // Retrieve the ID of the clicked submit button
+        const transaction = buttonId; // Use button ID as the transaction type
+        const order = {
+          type: form,
+          ...formData[transaction as keyof FormDataType],
+        };
+        const hasEmptyFields = Object.values(order).some(
+          (value) => value === ""
+        );
+        if (hasEmptyFields) {
+          console.log("has empty fields");
+          return;
+        }
+        setIsLoading({ value: true, transaction: buttonId });
+
+        await tradeAPI.postOrder(order);
+
+        setIsOrderPosted(true);
+    
+        setIsLoading({ value: false, transaction: null });
+        setFormData(newFormData)
+      }
+    },
+    [form, formData]
+  );
+
   const TradeFormContextValue = useMemo(
     () => ({
       formData,
@@ -120,15 +143,19 @@ export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
       setChoosenPrice,
       onFormChange,
       onTabChange,
+      setIsOrderPosted,
+      isOrderPosted,
+      onFormSubmit,
+      isLoading,
     }),
-    [form, formData, choosenPrice]
+    [form, formData, choosenPrice, isOrderPosted, onFormSubmit, isLoading]
   );
 
   return (
-    <OrderFormContext.Provider value={TradeFormContextValue}>
+    <TradeFormContext.Provider value={TradeFormContextValue}>
       {children}
-    </OrderFormContext.Provider>
+    </TradeFormContext.Provider>
   );
 };
 
-export { OrderFormContext };
+export { TradeFormContext };

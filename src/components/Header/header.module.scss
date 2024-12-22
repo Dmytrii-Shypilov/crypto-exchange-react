@@ -104,7 +104,13 @@
   &:hover {
     fill: var(--green)
   }
+
   @include mq.screen-size(mobile) {
     display: none;
   }
+}
+
+.logout_icon_dark {
+  @extend .logout_icon;
+  fill: var(--text-col-light);
 }

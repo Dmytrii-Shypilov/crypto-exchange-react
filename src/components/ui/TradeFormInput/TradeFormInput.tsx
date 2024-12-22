@@ -1,10 +1,8 @@
 import s from "./trade-input.module.scss";
 
-import { useState, useEffect } from "react";
 import { Icons } from "../../SVGIcons/icons";
 import { InputType, Transaction } from "../../../constants";
-import { getLeastUnit } from "../../../utils/helpers";
-import { useRef } from "react";
+import { doOperation} from "../../../utils/helpers";
 import { useFormData } from "../../../hooks/useFormData";
 
 
@@ -15,7 +13,7 @@ type InputProps = {
   transaction: Transaction;
 };
 
-// ChangeEvent<HTMLInputElement>
+
 
 const TradeFormInput: React.FC<InputProps> = ({
   currency,
@@ -24,20 +22,7 @@ const TradeFormInput: React.FC<InputProps> = ({
   value,
 }) => {
 
-const [inputValue, setInputValue] = useState('')
 const {onFormChange}= useFormData()
-
-
-const leastUnit = useRef(0);
-const decimalPlaces = useRef(0);
-const { num, dec } = getLeastUnit(value);
-  leastUnit.current = num;
-  decimalPlaces.current = dec;
-useEffect(() => {
- 
-  
-  setInputValue(value);
-}, [value]);
 
   const capitalizeFirstLetter = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
@@ -46,39 +31,37 @@ useEffect(() => {
 
   const onClickChange = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.currentTarget as HTMLSpanElement;
-    if (inputValue && !isNaN(Number(inputValue))) {
+    // if (value && !isNaN(Number(value))) {
       
-    
-    
+  
       const updatedValue =
         target.id === "increment"
-          ? (Number(inputValue) + leastUnit.current)
-          : (Number(inputValue) - leastUnit.current)
+          ? doOperation(value, '+')
+          : (Number(value) > 0? doOperation(value, '-') : '0')
 
-      const newValue = updatedValue.toFixed(8)
-      setInputValue(newValue);
+      
+      // setInputValue(updatedValue);
       const syntheticEvent = {
         target: {
           id: transaction, 
           name: type, 
-          value: newValue,
+          value: updatedValue,
         },
       } as React.ChangeEvent<HTMLInputElement>;
   
       onFormChange(syntheticEvent); 
-    }
+    // }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value); // Update local state
-    onFormChange(e); // Update parent state
+    onFormChange(e)
   };
 
   return (
     <div className={s.input}>
       <span className={s.type}>{capitalizeFirstLetter(type)}</span>
       <input
-        value={inputValue}
+        value={value}
         id={transaction}
         name={type}
         className={s.input_field}

@@ -132,7 +132,7 @@ const AuthorizationForm: React.FC = () => {
 
       {formType === "signup" &&
         renderInputField("confirmPassword", "Confirm Password", "password")}
-      {isLoading && <LoadingSpinner/>}
+      {isLoading && <LoadingSpinner size='30px'/>}
       {isError && !isLoading && <p className={s.error}>{message}</p>}
       <div className={s.btnWrapper}>
         <Button width="100%" type="submit">

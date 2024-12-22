@@ -4,16 +4,23 @@ import { Icons } from "../SVGIcons/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { getFavCoins } from "../../redux/coins/coins-selector";
 import { addToFavorite } from '../../redux/coins/coins-slice';
+import { coinsAPI } from '../../api/coinsAPI';
 import { memo } from 'react';
 
 const StarButton: React.FC<{pair: string, size: string}> = ({pair, size}) => {
     const dispatch = useDispatch()
-    const favCoins = useSelector(getFavCoins)
-    const isFavorite = favCoins.includes(pair)
+    const {favs} = useSelector(getFavCoins)
+   
+    const isFavorite = (favs || []).includes(pair)
 
     const onPairSelect = () => {
+      const coinsPair = pair.split('/').join('-')
         dispatch(addToFavorite(pair))
-        // post request
+        if (isFavorite) {
+          coinsAPI.removePairFromFavorites(coinsPair)
+        } else {
+          coinsAPI.addPairToFavorites(coinsPair)
+        }
     }
 
   return (

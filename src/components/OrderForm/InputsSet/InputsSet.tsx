@@ -19,7 +19,7 @@ const InputsSet: React.FC<InputsSetProps> = ({
   const [base, quote] = pair.split("-");
   
   const {form} = useFormData()
-  console.log("INPUT SET")
+
 
   const formConfig = {
     [Form.Limit]: [
@@ -43,6 +43,7 @@ const InputsSet: React.FC<InputsSetProps> = ({
       { type: InputType.Amount, currency: base },
     ],
   };
+
   const getFormFieldValue = (type: InputType) => {
     return formData[type as keyof FormDataTypeObj] || "";
   };
@@ -53,7 +54,7 @@ const InputsSet: React.FC<InputsSetProps> = ({
       {formConfig[form]?.map(({ type, currency }) => (
 
       <TradeFormInput
-      key={Math.random()}
+      key={`${transaction}:${type}`}
         value={getFormFieldValue(type)}
         transaction={transaction}
         currency={currency}
