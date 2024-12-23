@@ -6,5 +6,5 @@ export const ROUTES = {
     SIGNUP: '/auth/signup',
     LOGOUT: 'auth/logout',
     COINS: '/coins',
-    ORDER: '/order'
+    PAPER_TRADE: '/paperTrade'
 }

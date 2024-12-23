@@ -1,6 +1,6 @@
 import s from "./trade-page.module.scss";
 
-import { OrderFormProvider } from "../../context/TradeFormContext";
+import { TradeFormProvider } from "../../context/TradeFormContext";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { StreamedTradeInfoType } from "../../constants";
@@ -40,7 +40,7 @@ const TradePage: React.FC = () => {
   }, [pair]);
 
   return (
-    <OrderFormProvider>
+    <TradeFormProvider>
       <main>
         {isLoading && <LoadingFallback/>}
         {!isLoading && streamedData && (
@@ -58,7 +58,7 @@ const TradePage: React.FC = () => {
           </section>
         )}
       </main>
-    </OrderFormProvider>
+    </TradeFormProvider>
   );
 };
 

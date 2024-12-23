@@ -37,7 +37,7 @@ type FormDataContextType = {
   setChoosenPrice: React.Dispatch<React.SetStateAction<string>>;
   onTabChange: (tabName: Form) => void;
   onFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onFormSubmit: (pair: string,e: React.FormEvent<HTMLFormElement>) => void;
   isOrderPosted: boolean;
   setIsOrderPosted: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: { value: boolean; transaction: Transaction | null };
@@ -47,7 +47,7 @@ const TradeFormContext = createContext<FormDataContextType | undefined>(
   undefined
 );
 
-export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
+export const TradeFormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [choosenPrice, setChoosenPrice] = useState<string>("");
@@ -96,7 +96,7 @@ export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const onFormSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+    async (pair: string, e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const newFormData = {
         buy: { ...formDefaults[form] },
@@ -111,10 +111,12 @@ export const OrderFormProvider: React.FC<{ children: React.ReactNode }> = ({
         const transaction = buttonId; // Use button ID as the transaction type
         const order = {
           type: form,
+          transaction: buttonId,
+          pair,
           ...formData[transaction as keyof FormDataType],
         };
         const hasEmptyFields = Object.values(order).some(
-          (value) => value === ""
+          (value) => value === "" || Number(value) === 0
         );
         if (hasEmptyFields) {
           console.log("has empty fields");

@@ -3,7 +3,9 @@ import { ROUTES } from "../routes/routePaths";
 
 const postOrder = async (order: object) => {
     try {
-        const response = await axiosInstance.post(ROUTES.TRADE+'/postOrder', order)
+        const response = await axiosInstance.post(ROUTES.PAPER_TRADE+'/postOrder', order, {
+            withCredentials: true
+        })
         return response.data
     } catch (error) {
         console.log(error)
@@ -17,7 +19,9 @@ const postOrder = async (order: object) => {
 
 const fetchOrders = async () => {
     try {
-        const response = await axiosInstance.get(ROUTES.TRADE+'/getOrders')
+        const response = await axiosInstance.get(ROUTES.PAPER_TRADE+'/getOrders', {
+            withCredentials: true
+        })
         return response.data
     } catch (error) {
         console.log(error)
@@ -27,7 +31,10 @@ const fetchOrders = async () => {
 
 const cancelOrder = async (orderId: string) => {
     try {
-        const response = await axiosInstance.delete(ROUTES.TRADE+`/cancelOrder/${orderId}`)
+        console.log(orderId)
+        const response = await axiosInstance.delete(ROUTES.PAPER_TRADE+`/cancelOrder/${orderId}`, {
+            withCredentials: true
+        })
         return response.data
     } catch (error) {
         console.log(error)

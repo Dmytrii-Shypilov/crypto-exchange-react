@@ -17,7 +17,7 @@ const OrderForm: React.FC<{ pair: string}> = ({
 
 
   return (
-    <form className={s.form} onSubmit={onFormSubmit}>
+    <form className={s.form} onSubmit={onFormSubmit.bind(null, `${base}/${quote}`)}>
       <FormTabs  />
       <div className={s.fields}>
         <div className={s.fields_block}>

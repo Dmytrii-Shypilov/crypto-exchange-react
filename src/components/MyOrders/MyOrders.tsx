@@ -3,31 +3,7 @@ import s from "./orders.module.scss";
 import { useEffect, useState } from "react";
 import { useFormData } from "../../hooks/useFormData";
 import { tradeAPI } from "../../api/tradeAPI";
-
-const  Orders = [
-  {
-    id: "1212",
-    date: "23-12-2024",
-    pair: "BTC/USDT",
-    type: "limit",
-    side: "sell",
-    price: 900,
-    amount: 10000,
-    filled: 8000,
-    total: 9000000,
-  },
-  {
-    id: "3322",
-    date: "23-12-2024",
-    pair: "BTC/USDT",
-    type: "limit",
-    side: "buy",
-    price: 900,
-    amount: 10000,
-    filled: 8000,
-    total: 9000000,
-  },
-];
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const executed = [
   {
@@ -54,19 +30,45 @@ const executed = [
   },
 ];
 
+type OrderType = {
+  _id: string,
+  orderTime: string,
+  pair: string,
+  type: string,
+  transaction: string,
+  price: string,
+  amount: string,
+  executed: string,
+  total:string,
+  filled: string
+}
+
 const MyOrders = () => {
   const [tab, setTab] = useState<string>("open");
-  const [orders, setOrders] = useState<[]>([]);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [orders, setOrders] = useState<OrderType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isOpenOrder = tab === "open";
 
   const { isOrderPosted, setIsOrderPosted } = useFormData();
+
+  useEffect(()=> {
+    const getOrders = async () => {
+      setIsLoading(true);
+      const orders = await tradeAPI.fetchOrders();
+      setOrders(orders);
+      setIsLoading(false);
+    };
+    getOrders();
+   
+   
+  }, [])
 
   useEffect(() => {
     if (isOrderPosted) {
       const getOrders = async () => {
         // setIsLoading(true);
         const orders = await tradeAPI.fetchOrders();
+    
         setOrders(orders);
         // setIsLoading(false);
       };
@@ -75,6 +77,15 @@ const MyOrders = () => {
       console.log('orders fetched')
     }
   }, [isOrderPosted, setIsOrderPosted]);
+
+  const onOrderCancel = async(id: string) => {
+    const result = await tradeAPI.cancelOrder(id)
+    if (result?.deleted) {
+      const filtered = orders.filter(el => el._id !== id)
+      setOrders(filtered)
+    }
+  }
+
 
   const names = [
     isOpenOrder ? "Date" : "Order Time",
@@ -95,7 +106,7 @@ const MyOrders = () => {
     <div className={s.orders_block}>
       <ul className={s.tab_list}>
         <li className={getTabClass("open")} onClick={() => setTab("open")}>
-          {`Open Orders(${MyOrders.length})`}
+          {`Open Orders(${orders.length})`}
         </li>
         <li
           className={getTabClass("history")}
@@ -111,17 +122,19 @@ const MyOrders = () => {
           </li>
         ))}
       </ul>
-      <ul className={s.order_list}>
-        {Orders.map((order) => (
-          <li key={order.id} className={s.order}>
-            {isOpenOrder && <span className={s.order_item}>{order.date}</span>}
+      {isLoading && <LoadingSpinner size={'25px'}/>}
+      {!orders.length && !isLoading && <div className={s.placeholder}><span>No orders posted</span></div> }
+      {!isLoading&&  <ul className={s.order_list}>
+        {orders.map((order) => (
+          <li key={order._id} className={s.order}>
+            {isOpenOrder && <span className={s.order_item}>{order.orderTime}</span>}
             {!isOpenOrder && (
               <span className={s.order_item}>{executed[0].orderTime}</span>
             )}
             <span className={s.order_item}>{order.pair}</span>
             <span className={s.order_item}>{order.type}</span>
-            <span className={order.side === "buy" ? s.order_buy : s.order_sell}>
-              {order.side}
+            <span className={order.transaction === "buy" ? s.order_buy : s.order_sell}>
+              {order.transaction}
             </span>
             <span className={s.order_item}>{order.price}</span>
             <span className={s.order_item}>{order.amount}</span>
@@ -133,13 +146,13 @@ const MyOrders = () => {
             )}
             <span className={s.order_item}>{order.total}</span>
             {isOpenOrder && (
-              <span id={order.id} className={s.btn}>
+              <span id={order._id} className={s.btn} onClick={onOrderCancel.bind(null, order._id)}>
                 cancel
               </span>
             )}
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   );
 };
