@@ -46,6 +46,7 @@ const userSlice = createSlice({
       state.message = payload.detail
       state.isError = true
       state.isLoading = false
+      state.user = initialState.user
     });
     builder.addCase(loginUser.pending, (state) => {
       state.isLoading = true;

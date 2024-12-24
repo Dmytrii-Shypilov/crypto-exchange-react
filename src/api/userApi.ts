@@ -6,7 +6,7 @@ import { UserSignupType, UserLoginType } from "../constants";
 
 const  signUpUser = async(user: UserSignupType) => {
     const response = await axiosInstance.post(ROUTES.SIGNUP, user)
-console.log(`API: ${response}`)
+
     return response.data
 }
 

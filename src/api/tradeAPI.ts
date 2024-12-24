@@ -41,8 +41,15 @@ const cancelOrder = async (orderId: string) => {
     }
 }
 
+const closePaperTradeStream = async() => {
+    await axiosInstance.get(ROUTES.PAPER_TRADE + `/closeStream`,{
+        withCredentials: true
+    })
+}
+
 export const tradeAPI = {
     postOrder,
     fetchOrders,
-    cancelOrder
+    cancelOrder,
+    closePaperTradeStream
 }
