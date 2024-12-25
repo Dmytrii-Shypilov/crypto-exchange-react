@@ -35,10 +35,10 @@ type OrderType = {
   orderTime: string,
   pair: string,
   type: string,
-  transaction: string,
+  side: string,
   price: string,
   amount: string,
-  executed: string,
+  // executed: string,
   total:string,
   filled: string
 }
@@ -133,8 +133,8 @@ const MyOrders = () => {
             )}
             <span className={s.order_item}>{order.pair}</span>
             <span className={s.order_item}>{order.type}</span>
-            <span className={order.transaction === "buy" ? s.order_buy : s.order_sell}>
-              {order.transaction}
+            <span className={order.side === "buy" ? s.order_buy : s.order_sell}>
+              {order.side}
             </span>
             <span className={s.order_item}>{order.price}</span>
             <span className={s.order_item}>{order.amount}</span>

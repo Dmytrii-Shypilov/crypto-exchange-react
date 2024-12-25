@@ -111,7 +111,7 @@ export const TradeFormProvider: React.FC<{ children: React.ReactNode }> = ({
         const transaction = buttonId; // Use button ID as the transaction type
         const order = {
           type: form,
-          transaction: buttonId,
+          side: buttonId,
           pair,
           ...formData[transaction as keyof FormDataType],
         };
