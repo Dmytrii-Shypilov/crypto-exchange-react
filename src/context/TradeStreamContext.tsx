@@ -91,3 +91,5 @@ export const TradeStreamProvider: React.FC<{ children: React.ReactNode }> = ({
     </TradeStreamContext.Provider>
   );
 };
+
+export {TradeStreamContext}

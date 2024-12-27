@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "../../redux/user/user-selector";
 import { logoutUser } from "../../redux/user/user-operations";
 import { AppDispatch } from "../../redux/store";
-import { tradeAPI } from "../../api/tradeAPI";
+// import { tradeAPI } from "../../api/tradeAPI";
 
 
 
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
 
   const onLogout = async () => {
     dispatch(logoutUser(id))
-    await tradeAPI.closePaperTradeStream()
+    // await tradeAPI.closePaperTradeStream()
   }
 
   const getLinkClass = ({ isActive }: { isActive: boolean }) => {

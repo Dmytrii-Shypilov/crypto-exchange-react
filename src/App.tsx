@@ -8,11 +8,13 @@ import TradePage from "./pages/TradePage/TradePage";
 import AuthorizationPage from "./pages/AuthorizationPage/AuthorizationPage";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import { TradeStreamProvider } from "./context/TradeStreamContext";
 
 
 function App() {
   
   return (
+    <TradeStreamProvider>
     <div className={s.wrapper}>
       <Header />
 
@@ -43,6 +45,7 @@ function App() {
         />
       </Routes>
     </div>
+    </TradeStreamProvider>
   );
 }
 
